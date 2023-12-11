@@ -16,6 +16,15 @@ File pickers based on [file_selector](https://pub.dev/packages/file_selector) wi
 
 ## Usage
 
+### macOS
+
+You need to add the following key to entitlements in order for macOS app to be able to access file system:
+
+```xml
+  <key>com.apple.security.files.user-selected.read-write</key>
+  <true/>
+```
+
 ### Pick files
 
 ```dart

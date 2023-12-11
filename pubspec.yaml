@@ -5,7 +5,7 @@ homepage: https://github.com/flutter-cavalry/fc_file_picker_util
 
 environment:
   sdk: ">=3.2.3 <4.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=3.7.0"
 
 dependencies:
   file_picker: ^6.1.1
