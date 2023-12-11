@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   ios_document_picker: ^0.0.1
   macos_file_picker: ^0.3.0
-  shared_storage: ^0.8.0
+  mg_shared_storage: ^0.7.0
 
 dev_dependencies:
   flutter_test:

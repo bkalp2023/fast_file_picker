@@ -134,7 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     final res =
                         await FcFilePickerUtil.pickFolder(macOSScoped: false);
                     setState(() {
-                      _output = res?.path ?? 'Cancelled';
+                      _output =
+                          res?.path ?? res?.uri?.toString() ?? 'Cancelled';
                     });
                   } catch (err) {
                     setState(() {

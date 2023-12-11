@@ -6,7 +6,7 @@ import 'package:ios_document_picker/ios_document_picker.dart';
 import 'package:ios_document_picker/ios_document_picker_platform_interface.dart';
 import 'package:macos_file_picker/macos_file_picker.dart';
 import 'package:macos_file_picker/macos_file_picker_platform_interface.dart';
-import 'package:shared_storage/shared_storage.dart' as saf;
+import 'package:mg_shared_storage/shared_storage.dart' as saf;
 
 final _macosPicker = MacosFilePicker();
 final _iosPicker = IosDocumentPicker();

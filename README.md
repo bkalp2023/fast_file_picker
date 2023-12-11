@@ -6,7 +6,7 @@
 | ---------------- | ------- | ----- | --- | ------- |
 | Pick files       | ✅      | ✅    | ✅  | ✅      |
 | Pick a folder    | ✅      | ✅    | ✅  | ✅      |
-| Pick a save path | ✅      | ✅    | ✅  | ✅      |
+| Pick a save path | ✅      | ✅    | ❌  | ❌      |
 
 File pickers based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
 
