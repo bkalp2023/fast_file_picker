@@ -10,9 +10,8 @@
 
 File pickers based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
 
-- Supports picking directory on iOS.
-- Supports picking save path on Android and iOS.
-- Picking folder on macOS can be configured to return a path or a URL.
+- Support picking a directory on iOS.
+- Picking a directory on macOS can be configured to return a path or a URL.
 
 ## Usage
 
