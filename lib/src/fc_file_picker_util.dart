@@ -8,9 +8,6 @@ import 'package:macos_file_picker/macos_file_picker.dart';
 import 'package:macos_file_picker/macos_file_picker_platform_interface.dart';
 import 'package:mg_shared_storage/shared_storage.dart' as saf;
 
-final _macosPicker = MacosFilePicker();
-final _iosPicker = IosDocumentPicker();
-
 /// Represents a picker result that could be either a file path or a URI.
 class FcFilePickerXResult {
   final String? path;
@@ -60,12 +57,14 @@ class FcFilePickerUtil {
           null, await saf.openDocumentTree());
     }
     if (Platform.isIOS) {
+      final iosPicker = IosDocumentPicker();
       return FcFilePickerXResult.fromStringOrUri(
-          (await _iosPicker.pick(DocumentPickerType.directory))?.first.url,
+          (await iosPicker.pick(DocumentPickerType.directory))?.first.url,
           null);
     }
     if (Platform.isMacOS) {
-      final res = await _macosPicker.pick(MacosFilePickerMode.folder);
+      final macosPicker = MacosFilePicker();
+      final res = await macosPicker.pick(MacosFilePickerMode.folder);
       if (res == null) {
         return null;
       }
@@ -81,7 +80,8 @@ class FcFilePickerUtil {
   /// You can optionally specify a default file name.
   static Future<String?> pickSaveFile({String? defaultName}) async {
     if (Platform.isMacOS) {
-      final res = await _macosPicker.pick(MacosFilePickerMode.saveFile,
+      final macosPicker = MacosFilePicker();
+      final res = await macosPicker.pick(MacosFilePickerMode.saveFile,
           defaultName: defaultName);
       if (res == null) {
         return null;
@@ -96,7 +96,8 @@ class FcFilePickerUtil {
   static Future<List<XFile>?> pickFilesCore({bool? allowsMultiple}) async {
     // Use fast native macOS picker.
     if (Platform.isMacOS) {
-      final res = await _macosPicker.pick(MacosFilePickerMode.file,
+      final macosPicker = MacosFilePicker();
+      final res = await macosPicker.pick(MacosFilePickerMode.file,
           allowsMultiple: allowsMultiple ?? false);
       if (res == null) {
         return null;

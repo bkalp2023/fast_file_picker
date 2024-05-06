@@ -1,3 +1,8 @@
+## 0.0.8
+
+- Update `file_selector`.
+- Don't reuse internal pickers.
+
 ## 0.0.3
 
 - Set Flutter version to `3.7.0`.
