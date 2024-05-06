@@ -14,7 +14,7 @@ platforms:
   windows:
 
 dependencies:
-  file_picker: ^6.1.1
+  file_picker: ^8.0.3
   file_selector: ^1.0.1
   flutter:
     sdk: flutter
