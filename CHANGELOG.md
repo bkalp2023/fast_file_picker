@@ -1,3 +1,7 @@
+## 0.1.0
+
+- Allow `FcFilePickerXResult` to return different types of paths.
+
 ## 0.0.8
 
 - Update `file_selector`.
