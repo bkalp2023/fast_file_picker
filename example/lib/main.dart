@@ -131,11 +131,22 @@ class _MyHomePageState extends State<MyHomePage> {
             OutlinedButton(
                 onPressed: () async {
                   try {
-                    final res =
-                        await FcFilePickerUtil.pickFolder(macOSScoped: false);
+                    final res = await FcFilePickerUtil.pickFolder();
                     setState(() {
-                      _output =
-                          res?.path ?? res?.uri?.toString() ?? 'Cancelled';
+                      if (res == null) {
+                        _output = 'Cancelled';
+                      } else {
+                        _output = '';
+                        if (res.path != null) {
+                          _output += 'Path: ${res.path}\n';
+                        }
+                        if (res.androidUri != null) {
+                          _output += 'Android URI: ${res.androidUri}\n';
+                        }
+                        if (res.iosUrl != null) {
+                          _output += 'iOS URL: ${res.iosUrl}\n';
+                        }
+                      }
                     });
                   } catch (err) {
                     setState(() {
