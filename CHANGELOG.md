@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Update `mg_shared_storage`.
+
 ## 0.1.0
 
 - Allow `FcFilePickerXResult` to return different types of paths.

@@ -1,6 +1,6 @@
 name: fc_file_picker_util
 description: "File pickers based on file_selector."
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/flutter-cavalry/fc_file_picker_util
 
 environment:
@@ -20,7 +20,7 @@ dependencies:
     sdk: flutter
   ios_document_picker: ^0.0.1
   macos_file_picker: ^0.3.0
-  mg_shared_storage: ^0.7.0
+  mg_shared_storage: ^0.8.0
 
 dev_dependencies:
   flutter_test:
