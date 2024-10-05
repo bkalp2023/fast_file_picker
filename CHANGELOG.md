@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Update `mg_shared_storage` to 0.9.0
+
 ## 0.2.0
 
 - Update `mg_shared_storage`.
