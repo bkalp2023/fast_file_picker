@@ -71,7 +71,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.3.0"
+    version: "0.4.0"
   ffi:
     dependency: transitive
     description:
@@ -290,10 +290,11 @@ packages:
   saf_util:
     dependency: transitive
     description:
-      name: saf_util
-      sha256: aa75c3788337d38e8f7a3a07be818a2f9a0e839a4a1c8cf00eb73e9e5762a16b
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "67f1f0215ec48f5ca7c38512956c7cc3dc7087d9"
+      url: "https://github.com/flutter-cavalry/saf_util.git"
+    source: git
     version: "0.0.2"
   sky_engine:
     dependency: transitive

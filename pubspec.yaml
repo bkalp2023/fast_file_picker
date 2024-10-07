@@ -20,7 +20,10 @@ dependencies:
     sdk: flutter
   ios_document_picker: ^0.0.1
   macos_file_picker: ^0.3.0
-  saf_util: ^0.0.2
+
+  saf_util:
+    git:
+      url: https://github.com/flutter-cavalry/saf_util.git
 
 dev_dependencies:
   flutter_test:
