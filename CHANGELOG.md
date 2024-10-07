@@ -1,3 +1,8 @@
+## 0.4.0
+
+- Merge `iosUrl` and `androidUri` into `uri` in `FcFilePickerXResult`.
+- Update gradle and kotlin versions.
+
 ## 0.3.0
 
 - Update `mg_shared_storage` to 0.9.0
