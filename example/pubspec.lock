@@ -71,7 +71,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.2.0"
+    version: "0.3.0"
   ffi:
     dependency: transitive
     description:
@@ -100,10 +100,10 @@ packages:
     dependency: transitive
     description:
       name: file_selector_android
-      sha256: cc4fbee97384ad0d5d08abfc92b4b3effa473783c9a372927ad857b46e8951d2
+      sha256: "00aafa9ae05a8663d0b4f17abd2a02316911ca0f46f9b9dacb9578b324d99590"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1+8"
+    version: "0.5.1+9"
   file_selector_ios:
     dependency: transitive
     description:
@@ -169,10 +169,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
-      sha256: "9ee02950848f61c4129af3d6ec84a1cfc0e47931abc746b03e7a3bc3e8ff6eda"
+      sha256: "9b78450b89f059e96c9ebb355fa6b3df1d6b330436e0b885fb49594c41721398"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.22"
+    version: "2.0.23"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -271,14 +271,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
-  mg_shared_storage:
-    dependency: transitive
-    description:
-      name: mg_shared_storage
-      sha256: "7188ff0e553eb6be599243cf24c56d2c59c680007e1266a764de0870c75825de"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.0"
   path:
     dependency: transitive
     description:
@@ -295,6 +287,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  saf_util:
+    dependency: transitive
+    description:
+      name: saf_util
+      sha256: aa75c3788337d38e8f7a3a07be818a2f9a0e839a4a1c8cf00eb73e9e5762a16b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -389,5 +389,5 @@ packages:
     source: hosted
     version: "5.5.5"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.5.3 <4.0.0"
   flutter: ">=3.24.0"

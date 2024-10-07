@@ -6,29 +6,29 @@ import 'package:ios_document_picker/ios_document_picker.dart';
 import 'package:ios_document_picker/ios_document_picker_platform_interface.dart';
 import 'package:macos_file_picker/macos_file_picker.dart';
 import 'package:macos_file_picker/macos_file_picker_platform_interface.dart';
-import 'package:mg_shared_storage/shared_storage.dart' as saf;
+import 'package:saf_util/saf_util.dart';
 
 /// Represents a picker result that could be either a file path or a URI.
 class FcFilePickerXResult {
   final String? path;
-  final String? iosUrl;
-  final Uri? androidUri;
+  final String? uri;
 
-  FcFilePickerXResult._(this.path, this.androidUri, this.iosUrl);
+  FcFilePickerXResult._(this.path, this.uri);
 
-  static FcFilePickerXResult? create(
-      {String? path, Uri? androidUri, String? iosUrl}) {
-    if (path != null || androidUri != null || iosUrl != null) {
-      return FcFilePickerXResult._(path, androidUri, iosUrl);
+  static FcFilePickerXResult? create({String? path, String? uri}) {
+    if (path != null || uri != null) {
+      return FcFilePickerXResult._(path, uri);
     }
     return null;
   }
 
   @override
   String toString() {
-    return path ?? androidUri?.toString() ?? iosUrl ?? '<null>';
+    return path ?? uri ?? '<null>';
   }
 }
+
+final SafUtil _safUtil = SafUtil();
 
 /// A utility class for picking files.
 class FcFilePickerUtil {
@@ -51,8 +51,7 @@ class FcFilePickerUtil {
   /// Picks a folder and return a [FilePickerXResult].
   static Future<FcFilePickerXResult?> pickFolder() async {
     if (Platform.isAndroid) {
-      return FcFilePickerXResult.create(
-          androidUri: await saf.openDocumentTree());
+      return FcFilePickerXResult.create(uri: await _safUtil.openDirectory());
     }
     if (Platform.isIOS) {
       final iosPicker = IosDocumentPicker();
@@ -63,7 +62,7 @@ class FcFilePickerUtil {
       final first = res.first;
       return FcFilePickerXResult.create(
         path: first.path,
-        iosUrl: first.url,
+        uri: first.url,
       );
     }
     if (Platform.isMacOS) {
@@ -73,7 +72,7 @@ class FcFilePickerUtil {
         return null;
       }
       return FcFilePickerXResult.create(
-          path: res.first.path, iosUrl: res.first.url);
+          path: res.first.path, uri: res.first.url);
     }
     final folderPath = await getDirectoryPath();
     return FcFilePickerXResult.create(path: folderPath);

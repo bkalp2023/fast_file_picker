@@ -140,11 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         if (res.path != null) {
                           _output += 'Path: ${res.path}\n';
                         }
-                        if (res.androidUri != null) {
-                          _output += 'Android URI: ${res.androidUri}\n';
-                        }
-                        if (res.iosUrl != null) {
-                          _output += 'iOS URL: ${res.iosUrl}\n';
+                        if (res.uri != null) {
+                          _output += 'URI: ${res.uri}\n';
                         }
                       }
                     });
