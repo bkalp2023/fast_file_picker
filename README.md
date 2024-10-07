@@ -8,10 +8,12 @@
 | Pick a folder    | ✅      | ✅    | ✅  | ✅      |
 | Pick a save path | ✅      | ✅    | ❌  | ❌      |
 
-File pickers based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
+[fc_file_picker_util] is based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
 
-- Support picking a directory on iOS.
-- Picking a directory on macOS can be configured to return a path or a URL.
+- Support picking a folder on iOS, which returns a URL.
+- Picking folder on macOS returns both path and URL.
+- Picking folder on Android returns an SAF Uri (which supports both internal and external storage).
+  - For SAF APIs on Flutter, refer to [saf_stream](https://pub.dev/packages/saf_stream) and [saf_util](https://pub.dev/packages/saf_util).
 
 ## Usage
 
@@ -24,26 +26,28 @@ You need to add the following key to entitlements in order for macOS app to be a
   <true/>
 ```
 
-### Pick files
+### Pick a file or multiple files
 
 ```dart
 /// Picks a file and return a
 /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
+/// If the user cancels the picker, it returns `null`.
 final file = await FcFilePickerUtil.pickFile();
 
 /// Picks multiple files and return a list of
 /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
+/// If the user cancels the picker, it returns `null`.
 final files = await FcFilePickerUtil.pickMultipleFiles();
 ```
 
 ### Pick a folder
 
 ```dart
-/// Picks a folder and return a [FilePickerXResult].
+/// Picks a folder and return a [FcFilePickerXResult].
+/// If the user cancels the picker, it returns `null`.
 ///
-/// [macOSScoped] whether to return URL on macOS. If false, returns path. On iOS,
-/// URL is always returned.
-final folder = await FcFilePickerUtil.pickFolder(macOSScoped: false);
+/// [writePermission] is only applicable on Android.
+final folder = await FcFilePickerUtil.pickFolder(writePermission: true);
 ```
 
 The result (`FilePickerXResult`) can be a URI or path depending on the platform:
@@ -58,6 +62,7 @@ The result (`FilePickerXResult`) can be a URI or path depending on the platform:
 
 ```dart
 /// Picks a save file location and return a [String] path.
-/// You can optionally specify a default file name.
+/// You can optionally specify a default file name via [defaultName].
+/// If the user cancels the picker, it returns `null`.
 final savePath = await FcFilePickerUtil.pickSaveFile();
 ```

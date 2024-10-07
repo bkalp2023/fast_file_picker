@@ -34,6 +34,7 @@ final SafUtil _safUtil = SafUtil();
 class FcFilePickerUtil {
   /// Picks a file and return a
   /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
+  /// If the user cancels the picker, it returns `null`.
   static Future<XFile?> pickFile() async {
     final res = await pickFilesCore();
     if (res == null) {
@@ -44,11 +45,15 @@ class FcFilePickerUtil {
 
   /// Picks multiple files and return a list of
   /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
+  /// If the user cancels the picker, it returns `null`.
   static Future<List<XFile>?> pickMultipleFiles() async {
     return pickFilesCore(allowsMultiple: true);
   }
 
-  /// Picks a folder and return a [FilePickerXResult].
+  /// Picks a folder and return a [FcFilePickerXResult].
+  /// If the user cancels the picker, it returns `null`.
+  ///
+  /// [writePermission] is only applicable on Android.
   static Future<FcFilePickerXResult?> pickFolder(
       {required bool writePermission}) async {
     if (Platform.isAndroid) {
@@ -81,7 +86,8 @@ class FcFilePickerUtil {
   }
 
   /// Picks a save file location and return a [String] path.
-  /// You can optionally specify a default file name.
+  /// You can optionally specify a default file name via [defaultName].
+  /// If the user cancels the picker, it returns `null`.
   static Future<String?> pickSaveFile({String? defaultName}) async {
     if (Platform.isMacOS) {
       final macosPicker = MacosFilePicker();
