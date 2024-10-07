@@ -131,7 +131,8 @@ class _MyHomePageState extends State<MyHomePage> {
             OutlinedButton(
                 onPressed: () async {
                   try {
-                    final res = await FcFilePickerUtil.pickFolder();
+                    final res = await FcFilePickerUtil.pickFolder(
+                        writePermission: false);
                     setState(() {
                       if (res == null) {
                         _output = 'Cancelled';

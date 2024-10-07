@@ -49,9 +49,11 @@ class FcFilePickerUtil {
   }
 
   /// Picks a folder and return a [FilePickerXResult].
-  static Future<FcFilePickerXResult?> pickFolder() async {
+  static Future<FcFilePickerXResult?> pickFolder(
+      {required bool writePermission}) async {
     if (Platform.isAndroid) {
-      return FcFilePickerXResult.create(uri: await _safUtil.openDirectory());
+      return FcFilePickerXResult.create(
+          uri: await _safUtil.openDirectory(writePermission: writePermission));
     }
     if (Platform.isIOS) {
       final iosPicker = IosDocumentPicker();

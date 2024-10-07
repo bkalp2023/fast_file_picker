@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Add required `writePermission` param to `pickFolder`
+
 ## 0.4.0
 
 - Merge `iosUrl` and `androidUri` into `uri` in `FcFilePickerXResult`.
