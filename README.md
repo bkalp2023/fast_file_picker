@@ -8,7 +8,7 @@
 | Pick a folder    | ✅      | ✅    | ✅  | ✅      |
 | Pick a save path | ✅      | ✅    | ❌  | ❌      |
 
-[fc_file_picker_util] is based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
+`fc_file_picker_util` is based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
 
 - Support picking a folder on iOS, which returns a URL.
 - Picking folder on macOS returns both path and URL.
