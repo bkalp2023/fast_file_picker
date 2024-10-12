@@ -1,3 +1,7 @@
+## 0.6.0
+
+- Update to `saf_util` 0.2.0.
+
 ## 0.5.0
 
 - Add required `writePermission` param to `pickFolder`
