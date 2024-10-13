@@ -53,7 +53,7 @@ final folder = await FcFilePickerUtil.pickFolder(writePermission: true);
 The result (`FilePickerXResult`) can be a URI or path depending on the platform:
 
 - Windows: path
-- macOS: URL if `macOSScoped` is true, otherwise path
+- macOS: both URL and path are returned
 - iOS: URL
   - Note: you might need to call [startAccessingSecurityScopedResource](https://pub.dev/packages/accessing_security_scoped_resource) to gain access to the directory on iOS.
 - Android: An SAF Uri
