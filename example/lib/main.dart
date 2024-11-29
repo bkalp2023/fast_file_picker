@@ -76,10 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(10),
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -102,7 +104,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   try {
                     final res = await FcFilePickerUtil.pickFile();
                     setState(() {
-                      _output = res?.path ?? 'Cancelled';
+                      if (res == null) {
+                        _output = 'Cancelled';
+                      } else {
+                        _output = res.toString();
+                      }
                     });
                   } catch (err) {
                     setState(() {
@@ -117,8 +123,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   try {
                     final res = await FcFilePickerUtil.pickMultipleFiles();
                     setState(() {
-                      _output =
-                          res?.map((e) => e.path).join('\n') ?? 'Cancelled';
+                      _output = res?.map((e) => e.toString()).join('\n') ??
+                          'Cancelled';
                     });
                   } catch (err) {
                     setState(() {
