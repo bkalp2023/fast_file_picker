@@ -84,10 +84,10 @@ packages:
     dependency: transitive
     description:
       name: file_selector_android
-      sha256: "00aafa9ae05a8663d0b4f17abd2a02316911ca0f46f9b9dacb9578b324d99590"
+      sha256: "98ac58e878b05ea2fdb204e7f4fc4978d90406c9881874f901428e01d3b18fbc"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1+9"
+    version: "0.5.1+12"
   file_selector_ios:
     dependency: transitive
     description:
@@ -100,10 +100,10 @@ packages:
     dependency: transitive
     description:
       name: file_selector_linux
-      sha256: "712ce7fab537ba532c8febdb1a8f167b32441e74acd68c3ccb2e36dcb52c4ab2"
+      sha256: "54cbbd957e1156d29548c7d9b9ec0c0ebb6de0a90452198683a7d23aed617a33"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.3"
+    version: "0.9.3+2"
   file_selector_macos:
     dependency: transitive
     description:
@@ -179,10 +179,10 @@ packages:
     dependency: transitive
     description:
       name: ios_document_picker
-      sha256: "8dd18eccf7543267bdcd0cf5291778a3a4961af339552f8c25f61874cb2fa828"
+      sha256: "896df05bfad5f7f6addbd60622c67deec4e782297d9fc99de634d288dd0cab59"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1"
+    version: "0.1.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -219,10 +219,10 @@ packages:
     dependency: transitive
     description:
       name: macos_file_picker
-      sha256: f6cc6c7ae528286a29f72d009239d19f086bcd608600bc75a8ef38e9beefedd9
+      sha256: fa310bbac0ec6ac6918777488e7621b3aec674a268ff593b7354d7bd5d9304e8
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.3.1"
   matcher:
     dependency: transitive
     description:
