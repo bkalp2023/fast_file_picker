@@ -107,6 +107,19 @@ class FcFilePickerUtil {
   /// Called by [pickFile] and [pickMultipleFiles].
   static Future<List<FcFilePickerPath>?> pickFilesCore(
       {bool? allowsMultiple}) async {
+    if (Platform.isIOS) {
+      final iosPicker = IosDocumentPicker();
+      final files = await iosPicker.pick(DocumentPickerType.file,
+          multiple: allowsMultiple ?? false);
+      if (files == null) {
+        return null;
+      }
+      final res = files
+          .map((e) => FcFilePickerPath.create(path: e.path, uri: e.url))
+          .nonNulls
+          .toList();
+      return res.isEmpty ? null : res;
+    }
     // Use fast native macOS picker.
     if (Platform.isMacOS) {
       final macosPicker = MacosFilePicker();

@@ -17,7 +17,7 @@ dependencies:
   file_selector: ^1.0.1
   flutter:
     sdk: flutter
-  ios_document_picker: ^0.1.0
+  ios_document_picker: ^0.2.0
   macos_file_picker: ^0.3.0
   saf_util: ^0.5.0
 

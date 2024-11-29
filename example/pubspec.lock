@@ -179,10 +179,10 @@ packages:
     dependency: transitive
     description:
       name: ios_document_picker
-      sha256: "896df05bfad5f7f6addbd60622c67deec4e782297d9fc99de634d288dd0cab59"
+      sha256: d47151d0f4638b49b2323c4d1c90b19baed67cb8815bc7333581ef451aef0da7
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.2.0"
   leak_tracker:
     dependency: transitive
     description:
