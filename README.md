@@ -2,18 +2,20 @@
 
 [![pub package](https://img.shields.io/pub/v/fc_file_picker_util.svg)](https://pub.dev/packages/fc_file_picker_util)
 
-|                  | Windows | macOS | iOS | Android |
-| ---------------- | ------- | ----- | --- | ------- |
-| Pick files       | ✅      | ✅    | ✅  | ✅      |
-| Pick a folder    | ✅      | ✅    | ✅  | ✅      |
-| Pick a save path | ✅      | ✅    | ❌  | ❌      |
+|                  | Windows   | macOS         | iOS           | Android  |
+| ---------------- | --------- | ------------- | ------------- | -------- |
+| Pick files       | ✅ (Path) | ✅ (Path/URL) | ✅ (Path/URL) | ✅ (Uri) |
+| Pick a folder    | ✅ (Path) | ✅ (Path/URL) | ✅ (Path/URL) | ✅ (Uri) |
+| Pick a save path | ✅ (Path) | ✅ (Path/URL) | ❌            | ❌       |
 
 `fc_file_picker_util` is based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
 
-- Support picking a folder on iOS, which returns a URL.
-- Picking folder on macOS returns both path and URL.
-- Picking folder on Android returns an SAF Uri (which supports both internal and external storage).
-  - For SAF APIs on Flutter, refer to [saf_stream](https://pub.dev/packages/saf_stream) and [saf_util](https://pub.dev/packages/saf_util).
+- On iOS and macOS, it returns both URL and path for files and folders.
+- On Android:
+  - Files: instead of copying the file to a temporary location, it returns an SAF Uri.
+  - Folders: it returns an SAF Uri.
+  - To access the Uri-based file or folder, use my other packages: [saf_stream](https://pub.dev/packages/saf_stream) and [saf_util](https://pub.dev/packages/saf_util).
+- On Windows, it returns the path for files and folders.
 
 ## Usage
 
@@ -26,43 +28,42 @@ You need to add the following key to entitlements in order for macOS app to be a
   <true/>
 ```
 
+### `FcFilePickerPath`
+
+Since `fc_file_picker_util` can return path or URI or both, the result is wrapped in `FcFilePickerPath`:
+
+```dart
+class FcFilePickerPath {
+  final String? path;
+  final String? uri;
+}
+```
+
 ### Pick a file or multiple files
 
 ```dart
-/// Picks a file and return a
-/// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
-/// If the user cancels the picker, it returns `null`.
+/// Picks a file and return a [FcFilePickerPath].
 final file = await FcFilePickerUtil.pickFile();
 
-/// Picks multiple files and return a list of
-/// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
-/// If the user cancels the picker, it returns `null`.
+/// Picks multiple files and return a list of [FcFilePickerPath].
 final files = await FcFilePickerUtil.pickMultipleFiles();
 ```
 
 ### Pick a folder
 
 ```dart
-/// Picks a folder and return a [FcFilePickerXResult].
-/// If the user cancels the picker, it returns `null`.
+/// Picks a folder and return a [FcFilePickerPath].
 ///
 /// [writePermission] is only applicable on Android.
 final folder = await FcFilePickerUtil.pickFolder(writePermission: true);
 ```
 
-The result (`FilePickerXResult`) can be a URI or path depending on the platform:
-
-- Windows: path
-- macOS: both URL and path are returned
-- iOS: URL
-  - Note: you might need to call [startAccessingSecurityScopedResource](https://pub.dev/packages/accessing_security_scoped_resource) to gain access to the directory on iOS.
-- Android: An SAF Uri
-
 ### Pick a save path
+
+> It's recommended to use mobile share menu to save files.
 
 ```dart
 /// Picks a save file location and return a [String] path.
 /// You can optionally specify a default file name via [defaultName].
-/// If the user cancels the picker, it returns `null`.
 final savePath = await FcFilePickerUtil.pickSaveFile();
 ```

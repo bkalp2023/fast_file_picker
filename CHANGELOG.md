@@ -1,3 +1,10 @@
+## 0.7.0
+
+- Remove `file_picker` dependency.
+- Set min iOS version to 14.0.
+- **Breaking**: File picking functions return `FcFilePickerPath` instead of `FcFilePickerXResult`.
+- Return both URL and path on iOS.
+
 ## 0.6.0
 
 - Update to `saf_util` 0.2.0.
