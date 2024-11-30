@@ -2,20 +2,19 @@
 
 [![pub package](https://img.shields.io/pub/v/fc_file_picker_util.svg)](https://pub.dev/packages/fc_file_picker_util)
 
-|                  | Windows   | macOS         | iOS           | Android  |
-| ---------------- | --------- | ------------- | ------------- | -------- |
-| Pick files       | ✅ (Path) | ✅ (Path/URL) | ✅ (Path/URL) | ✅ (Uri) |
-| Pick a folder    | ✅ (Path) | ✅ (Path/URL) | ✅ (Path/URL) | ✅ (Uri) |
-| Pick a save path | ✅ (Path) | ✅ (Path/URL) | ❌            | ❌       |
+|                  | Windows          | macOS                  | iOS                    | Android  |
+| ---------------- | ---------------- | ---------------------- | ---------------------- | -------- |
+| Pick files       | ✅ (Name / Path) | ✅ (Name / Path / URL) | ✅ (Name / Path / URL) | ✅ (Uri) |
+| Pick a folder    | ✅ (Name / Path) | ✅ (Name / Path / URL) | ✅ (Name / Path / URL) | ✅ (Uri) |
+| Pick a save path | ✅ (Name / Path) | ✅ (Name / Path / URL) | ❌                     | ❌       |
 
 `fc_file_picker_util` is based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
 
 - On iOS and macOS, it returns both URL and path for files and folders.
 - On Android:
-  - Files: instead of copying the file to a temporary location, it returns an SAF Uri.
-  - Folders: it returns an SAF Uri.
-  - To access the Uri-based file or folder, use my other packages: [saf_stream](https://pub.dev/packages/saf_stream) and [saf_util](https://pub.dev/packages/saf_util).
-- On Windows, it returns the path for files and folders.
+  - When picking files: instead of copying the file to a temporary location, it returns file SAF Uri directly.
+  - When picking folder: it returns an SAF Uri.
+  - To access the SAF Uri-based files or folders, use my other packages: [saf_stream](https://pub.dev/packages/saf_stream) and [saf_util](https://pub.dev/packages/saf_util).
 
 ## Usage
 
@@ -34,6 +33,7 @@ Since `fc_file_picker_util` can return path or URI or both, the result is wrappe
 
 ```dart
 class FcFilePickerPath {
+  final String name;
   final String? path;
   final String? uri;
 }

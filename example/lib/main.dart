@@ -104,11 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   try {
                     final res = await FcFilePickerUtil.pickFile();
                     setState(() {
-                      if (res == null) {
-                        _output = 'Cancelled';
-                      } else {
-                        _output = res.toString();
-                      }
+                      _output = res?.toString() ?? 'Cancelled';
                     });
                   } catch (err) {
                     setState(() {
@@ -140,17 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     final res = await FcFilePickerUtil.pickFolder(
                         writePermission: false);
                     setState(() {
-                      if (res == null) {
-                        _output = 'Cancelled';
-                      } else {
-                        _output = '';
-                        if (res.path != null) {
-                          _output += 'Path: ${res.path}\n';
-                        }
-                        if (res.uri != null) {
-                          _output += 'URI: ${res.uri}\n';
-                        }
-                      }
+                      _output = res?.toString() ?? 'Cancelled';
                     });
                   } catch (err) {
                     setState(() {

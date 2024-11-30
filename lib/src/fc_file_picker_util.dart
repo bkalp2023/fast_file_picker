@@ -3,34 +3,32 @@ import 'package:file_selector/file_selector.dart';
 import 'package:ios_document_picker/ios_document_picker.dart';
 import 'package:ios_document_picker/ios_document_picker_platform_interface.dart';
 import 'package:macos_file_picker/macos_file_picker.dart';
-import 'package:macos_file_picker/macos_file_picker_platform_interface.dart';
 import 'package:saf_util/saf_util.dart';
+import 'package:path/path.dart' as p;
 
 /// Represents a picker path that could be either a file path or a URI.
 class FcFilePickerPath {
+  final String name;
   final String? path;
   final String? uri;
 
-  FcFilePickerPath._(this.path, this.uri);
+  FcFilePickerPath._(this.name, this.path, this.uri);
 
-  static FcFilePickerPath? create({String? path, String? uri}) {
-    if (path != null || uri != null) {
-      return FcFilePickerPath._(path, uri);
-    }
-    return null;
+  static FcFilePickerPath fromUri(String name, String uri) {
+    return FcFilePickerPath._(name, null, uri);
   }
 
-  static FcFilePickerPath fromUri(String uri) {
-    return FcFilePickerPath._(null, uri);
+  static FcFilePickerPath fromPath(String name, String path) {
+    return FcFilePickerPath._(name, path, null);
   }
 
-  static FcFilePickerPath fromPath(String path) {
-    return FcFilePickerPath._(path, null);
+  static FcFilePickerPath fromPathAndUri(String name, String path, String uri) {
+    return FcFilePickerPath._(name, path, uri);
   }
 
   @override
   String toString() {
-    return 'FcFilePickerPath{path: $path, uri: $uri}';
+    return 'FcFilePickerPath(name: $name, path: $path, uri: $uri)';
   }
 }
 
@@ -60,31 +58,37 @@ class FcFilePickerUtil {
   static Future<FcFilePickerPath?> pickFolder(
       {required bool writePermission}) async {
     if (Platform.isAndroid) {
-      return FcFilePickerPath.create(
-          uri: await _safUtil.openDirectory(writePermission: writePermission));
+      final res =
+          await _safUtil.pickDirectory(writePermission: writePermission);
+      if (res == null) {
+        return null;
+      }
+      return FcFilePickerPath.fromUri(res.name, res.uri);
     }
     if (Platform.isIOS) {
       final iosPicker = IosDocumentPicker();
-      final res = await iosPicker.pick(DocumentPickerType.directory);
+      final res =
+          (await iosPicker.pick(IosDocumentPickerType.directory))?.first;
       if (res == null) {
         return null;
       }
-      final first = res.first;
-      return FcFilePickerPath.create(
-        path: first.path,
-        uri: first.url,
-      );
+      return FcFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
     }
     if (Platform.isMacOS) {
       final macosPicker = MacosFilePicker();
-      final res = await macosPicker.pick(MacosFilePickerMode.folder);
+      final res = (await macosPicker.pick(MacosFilePickerMode.folder))?.first;
       if (res == null) {
         return null;
       }
-      return FcFilePickerPath.create(path: res.first.path, uri: res.first.url);
+      return FcFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
     }
+
     final folderPath = await getDirectoryPath();
-    return FcFilePickerPath.create(path: folderPath);
+    if (folderPath == null) {
+      return null;
+    }
+    final folderName = p.basename(folderPath);
+    return FcFilePickerPath.fromPath(folderName, folderPath);
   }
 
   /// Picks a save file location and return a [String] path.
@@ -109,13 +113,13 @@ class FcFilePickerUtil {
       {bool? allowsMultiple}) async {
     if (Platform.isIOS) {
       final iosPicker = IosDocumentPicker();
-      final files = await iosPicker.pick(DocumentPickerType.file,
+      final files = await iosPicker.pick(IosDocumentPickerType.file,
           multiple: allowsMultiple ?? false);
       if (files == null) {
         return null;
       }
       final res = files
-          .map((e) => FcFilePickerPath.create(path: e.path, uri: e.url))
+          .map((e) => FcFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
           .nonNulls
           .toList();
       return res.isEmpty ? null : res;
@@ -129,17 +133,18 @@ class FcFilePickerUtil {
         return null;
       }
       final res = files
-          .map((e) => FcFilePickerPath.create(path: e.path, uri: e.url))
+          .map((e) => FcFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
           .nonNulls
           .toList();
       return res.isEmpty ? null : res;
     }
     if (Platform.isAndroid) {
-      final files = await _safUtil.openFiles(multiple: allowsMultiple ?? false);
+      final files = await _safUtil.pickFiles(multiple: allowsMultiple ?? false);
       if (files == null || files.isEmpty) {
         return null;
       }
-      final res = files.map((f) => FcFilePickerPath.fromUri(f)).toList();
+      final res =
+          files.map((e) => FcFilePickerPath.fromUri(e.name, e.uri)).toList();
       return res.isEmpty ? null : res;
     }
 
@@ -147,10 +152,14 @@ class FcFilePickerUtil {
       final files = await openFiles();
       return files.isEmpty
           ? null
-          : files.map((e) => FcFilePickerPath.fromPath(e.path)).toList();
+          : files
+              .map((e) => FcFilePickerPath.fromPath(e.name, e.path))
+              .toList();
     }
 
     final file = await openFile();
-    return file == null ? null : [FcFilePickerPath.fromPath(file.path)];
+    return file == null
+        ? null
+        : [FcFilePickerPath.fromPath(file.name, file.path)];
   }
 }
