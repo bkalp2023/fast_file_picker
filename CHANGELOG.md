@@ -1,3 +1,7 @@
+## 0.8.1
+
+- Make `FcFilePickerPath` JSON serializable.
+
 ## 0.8.0
 
 - Add `name` to `FcFilePickerPath`.

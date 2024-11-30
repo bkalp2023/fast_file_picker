@@ -30,6 +30,19 @@ class FcFilePickerPath {
   String toString() {
     return 'FcFilePickerPath(name: $name, path: $path, uri: $uri)';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'path': path,
+      'uri': uri,
+    };
+  }
+
+  FcFilePickerPath.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        path = json['path'],
+        uri = json['uri'];
 }
 
 final SafUtil _safUtil = SafUtil();
