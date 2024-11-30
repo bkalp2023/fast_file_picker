@@ -1,3 +1,7 @@
+## 0.8.0
+
+- Add `name` to `FcFilePickerPath`.
+
 ## 0.7.0
 
 - Remove `file_picker` dependency.

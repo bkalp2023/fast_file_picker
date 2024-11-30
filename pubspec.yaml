@@ -1,6 +1,6 @@
 name: fc_file_picker_util
 description: "File pickers based on file_selector."
-version: 0.7.0
+version: 0.8.0
 homepage: https://github.com/flutter-cavalry/fc_file_picker_util
 
 environment:
