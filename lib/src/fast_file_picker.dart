@@ -22,7 +22,8 @@ class FastFilePickerPath {
     return FastFilePickerPath._(name, path, null);
   }
 
-  static FastFilePickerPath fromPathAndUri(String name, String path, String uri) {
+  static FastFilePickerPath fromPathAndUri(
+      String name, String path, String uri) {
     return FastFilePickerPath._(name, path, uri);
   }
 
@@ -47,24 +48,21 @@ class FastFilePickerPath {
 
 final SafUtil _safUtil = SafUtil();
 
-/// A utility class for picking files.
 class FcFilePickerUtil {
-  /// Picks a file and return a
-  /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
+  /// Picks a file and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
   static Future<FastFilePickerPath?> pickFile() async {
     final res = await pickFilesCore();
     return res?.first;
   }
 
-  /// Picks multiple files and return a list of
-  /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
+  /// Picks multiple files and return a list of [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
   static Future<List<FastFilePickerPath>?> pickMultipleFiles() async {
     return pickFilesCore(allowsMultiple: true);
   }
 
-  /// Picks a folder and return a [FcFilePickerXResult].
+  /// Picks a folder and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
   ///
   /// [writePermission] is only applicable on Android.

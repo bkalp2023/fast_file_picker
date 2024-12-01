@@ -280,7 +280,7 @@ packages:
     source: hosted
     version: "0.10.0"
   saf_util:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: saf_util
       sha256: d0a3c7a023a02bc6d10f5eff02ec714b6834393ec39a9c1f7e3662ac30e5f909

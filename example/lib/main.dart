@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fast_file_picker/fast_file_picker.dart';
 import 'package:saf_stream/saf_stream.dart';
+import 'package:saf_util/saf_util.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,6 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _safStream = SafStream();
+  final _safUtil = SafUtil();
 
   String _output = '';
 
@@ -50,69 +52,120 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(10),
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(_output),
-            const SizedBox(height: 10),
-            OutlinedButton(
-                onPressed: () async {
-                  final res = await FcFilePickerUtil.pickFile();
-                  if (res == null) {
-                    setState(() {
-                      _output = 'Cancelled';
-                    });
-                  } else {
-                    _readFiles([res]);
-                  }
-                },
-                child: const Text('Pick File')),
-            const SizedBox(height: 10),
-            OutlinedButton(
-                onPressed: () async {
-                  final res = await FcFilePickerUtil.pickMultipleFiles();
-                  if (res == null) {
-                    setState(() {
-                      _output = 'Cancelled';
-                    });
-                  } else {
-                    _readFiles(res);
-                  }
-                },
-                child: const Text('Pick Files')),
-            const SizedBox(height: 10),
-            OutlinedButton(
-                onPressed: () async {
-                  try {
-                    final res = await FcFilePickerUtil.pickFolder(
-                        writePermission: false);
-                    setState(() {
-                      _output = res?.toString() ?? 'Cancelled';
-                    });
-                  } catch (err) {
-                    setState(() {
-                      _output = err.toString();
-                    });
-                  }
-                },
-                child: const Text('Pick Folder')),
-            const SizedBox(height: 10),
-            OutlinedButton(
-                onPressed: () async {
-                  try {
-                    final res = await FcFilePickerUtil.pickSaveFile();
-                    setState(() {
-                      _output = res?.toString() ?? 'Cancelled';
-                    });
-                  } catch (err) {
-                    setState(() {
-                      _output = err.toString();
-                    });
-                  }
-                },
-                child: const Text('Pick Save File')),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              OutlinedButton(
+                  onPressed: () async {
+                    final res = await FcFilePickerUtil.pickFile();
+                    if (res == null) {
+                      setState(() {
+                        _output = 'Cancelled';
+                      });
+                    } else {
+                      _readFiles([res]);
+                    }
+                  },
+                  child: const Text('Pick File')),
+              const SizedBox(height: 10),
+              OutlinedButton(
+                  onPressed: () async {
+                    final files = await FcFilePickerUtil.pickMultipleFiles();
+                    if (files == null) {
+                      setState(() {
+                        _output = 'Cancelled';
+                      });
+                    } else {
+                      _readFiles(files);
+                    }
+                  },
+                  child: const Text('Pick Files')),
+              const SizedBox(height: 10),
+              OutlinedButton(
+                  onPressed: () async {
+                    try {
+                      // Handle selected folder.
+                      final folder = await FcFilePickerUtil.pickFolder(
+                          writePermission: false);
+                      if (folder == null) {
+                        setState(() {
+                          _output = 'Cancelled';
+                        });
+                        return;
+                      }
+                      if (Platform.isIOS) {
+                        // Handle iOS folder.
+
+                        // Use [useAppleScopedResource] to request access to the folder.
+                        await folder
+                            .useAppleScopedResource((hasAccess, folder) async {
+                          // You can access the folder only if [hasAccess] is true.
+                          if (!hasAccess) {
+                            setState(() {
+                              _output = 'No access to folder';
+                            });
+                            return;
+                          }
+                          final subFileNames =
+                              (await Directory(folder.path!).list().toList())
+                                  .map((e) => e.path);
+
+                          setState(() {
+                            _output =
+                                'Folder: $folder\n\nSubfiles: $subFileNames';
+                          });
+                        });
+                      } else if (Platform.isAndroid && folder.uri != null) {
+                        // Handle Android folder.
+
+                        // Use [saf_util] package to list files in the folder.
+                        // Or use [saf_stream] package to read the files.
+                        final subFileNames = (await _safUtil.list(folder.uri!))
+                            .map((e) => e.name);
+
+                        setState(() {
+                          _output =
+                              'Folder: $folder\n\nSubfiles: $subFileNames';
+                        });
+                      } else if (folder.path != null) {
+                        // Handle Windows / macOS / Linux folder.
+                        final subFileNames =
+                            (await Directory(folder.path!).list().toList())
+                                .map((e) => e.path);
+
+                        setState(() {
+                          _output =
+                              'Folder: $folder\n\nSubfiles: $subFileNames';
+                        });
+                      }
+                    } catch (err) {
+                      setState(() {
+                        _output = err.toString();
+                      });
+                    }
+                  },
+                  child: const Text('Pick Folder')),
+              const SizedBox(height: 10),
+              OutlinedButton(
+                  onPressed: () async {
+                    try {
+                      final savePath = await FcFilePickerUtil.pickSaveFile();
+                      setState(() {
+                        _output = savePath?.toString() ?? 'Cancelled';
+                      });
+                    } catch (err) {
+                      setState(() {
+                        _output = err.toString();
+                      });
+                    }
+                  },
+                  child: const Text('Pick Save File')),
+              const SizedBox(height: 10),
+              Text(_output),
+            ],
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -126,24 +179,27 @@ class _MyHomePageState extends State<MyHomePage> {
         s += 'File: $file\n';
 
         if (Platform.isIOS) {
-          await file.accessAppleScopedResource((hasAccess, file) async {
+          // Handle iOS file.
+          await file.useAppleScopedResource((hasAccess, file) async {
+            // You can access the file only if [hasAccess] is true.
             if (!hasAccess) {
               return;
             }
+            // Now you can read the file with Dart's IO.
             final bytes = await File(file.path!).readAsBytes();
 
-            // Handle file content.
             s += 'Bytes: ${_formatBytes(bytes)}\n\n';
           });
         } else if (file.uri != null && Platform.isAndroid) {
+          // Handle Android file.
+          // For example, use [saf_stream] package to read the file.
           final bytes = await _safStream.readFileBytes(file.uri!);
 
-          // Handle file content.
           s += 'Bytes: ${_formatBytes(bytes)}\n\n';
         } else if (file.path != null) {
+          // Handle Windows / macOS / Linux file.
           final bytes = await File(file.path!).readAsBytes();
 
-          // Handle file content.
           s += 'Bytes: ${_formatBytes(bytes)}\n\n';
         }
       }
