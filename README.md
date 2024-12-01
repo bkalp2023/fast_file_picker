@@ -1,3 +1,5 @@
+Deprecated: Moved to [fast_file_picker](https://pub.dev/packages/fast_file_picker).
+
 # fc_file_picker_util
 
 [![pub package](https://img.shields.io/pub/v/fc_file_picker_util.svg)](https://pub.dev/packages/fc_file_picker_util)
