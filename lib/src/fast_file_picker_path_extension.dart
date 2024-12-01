@@ -45,24 +45,26 @@ extension FastFilePickerPathExtension on FastFilePickerPath {
   /// [action] is done or fails.
   /// This has no effect on non-Apple platforms or if the path
   /// or URI is not set.
-  Future<void> useAppleScopedResource(
-      Future<void> Function(bool hasAccess, FastFilePickerPath pickerPath)
-          action) async {
+  Future<bool?> useAppleScopedResource(
+      Future<void> Function(FastFilePickerPath pickerPath) action) async {
     if (uri == null || path == null) {
-      return;
+      return null;
     }
     if (!Platform.isIOS && !Platform.isMacOS) {
-      return;
+      return null;
     }
     bool hasAccess = false;
     try {
       hasAccess =
           await _plugin.startAccessingSecurityScopedResourceWithURL(uri!);
-      await action(hasAccess, this);
+      if (hasAccess) {
+        await action(this);
+      }
     } finally {
       if (hasAccess) {
         await _plugin.stopAccessingSecurityScopedResourceWithURL(uri!);
       }
     }
+    return hasAccess;
   }
 }

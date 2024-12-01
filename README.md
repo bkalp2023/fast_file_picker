@@ -71,14 +71,16 @@ if (files == null) {
 for (final file in files) {
   if (Platform.isIOS) {
     // Handle iOS file.
-    await file.useAppleScopedResource((hasAccess, file) async {
-      // You can access the file only if [hasAccess] is true.
-      if (!hasAccess) {
-        return;
-      }
+    // Use [useAppleScopedResource] to request access to the file.
+    final hasAccess = await file.useAppleScopedResource((file) async {
+      // Callback gets called only if access is granted.
       // Now you can read the file with Dart's IO.
       final bytes = await File(file.path!).readAsBytes();
     });
+
+    if (hasAccess != true) {
+      debugPrint('No access to file');
+    }
   } else if (file.uri != null && Platform.isAndroid) {
     // Handle Android file.
     // For example, use [saf_stream] package to read the file.
@@ -125,15 +127,10 @@ if (Platform.isIOS) {
   // Handle iOS folder.
 
   // Use [useAppleScopedResource] to request access to the folder.
-  await folder
-      .useAppleScopedResource((hasAccess, folder) async {
+  final hasAccess = await folder
+      .useAppleScopedResource((folder) async {
+    // Callback gets called only if access is granted.
     // You can access the folder only if [hasAccess] is true.
-    if (!hasAccess) {
-      setState(() {
-        _output = 'No access to folder';
-      });
-      return;
-    }
     final subFileNames =
         (await Directory(folder.path!).list().toList())
             .map((e) => e.path);
@@ -143,6 +140,12 @@ if (Platform.isIOS) {
           'Folder: $folder\n\nSubfiles: $subFileNames';
     });
   });
+
+  if (hasAccess != true) {
+    setState(() {
+      _output = 'No access to folder';
+    });
+  }
 } else if (Platform.isAndroid && folder.uri != null) {
   // Handle Android folder.
 
@@ -233,13 +236,14 @@ if (pickerResult == null) {
 }
 if (Platform.isIOS) {
   // This will automatically release the access when done.
-  await pickerResult.useAppleScopedResource((hasAccess, file) async {
-    if (hasAccess != true) {
-      // Denied access or not supported.
-      return;
-    }
-
-    /** Access the file or folder */
+  // If platform is not supported or access is denied, callback will not be called.
+  final hasAccess = await pickerResult.useAppleScopedResource((file) async {
+    /** Access granted */
+    /** Process the resource */
   });
+  if (hasAccess != true) {
+    // Denied access or not supported.
+    return;
+  }
 }
 ```

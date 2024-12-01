@@ -99,15 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         // Handle iOS folder.
 
                         // Use [useAppleScopedResource] to request access to the folder.
-                        await folder
-                            .useAppleScopedResource((hasAccess, folder) async {
-                          // You can access the folder only if [hasAccess] is true.
-                          if (!hasAccess) {
-                            setState(() {
-                              _output = 'No access to folder';
-                            });
-                            return;
-                          }
+                        final hasAccess =
+                            await folder.useAppleScopedResource((folder) async {
+                          // Callback gets called only if access is granted.
                           final subFileNames =
                               (await Directory(folder.path!).list().toList())
                                   .map((e) => e.path);
@@ -117,6 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                 'Folder: $folder\n\nSubfiles: $subFileNames';
                           });
                         });
+
+                        if (hasAccess != true) {
+                          setState(() {
+                            _output = 'No access to folder';
+                          });
+                        }
                       } else if (Platform.isAndroid && folder.uri != null) {
                         // Handle Android folder.
 
@@ -181,16 +181,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
         if (Platform.isIOS) {
           // Handle iOS file.
-          await file.useAppleScopedResource((hasAccess, file) async {
-            // You can access the file only if [hasAccess] is true.
-            if (!hasAccess) {
-              return;
-            }
+          // Use [useAppleScopedResource] to request access to the file.
+          final hasAccess = await file.useAppleScopedResource((file) async {
+            // Callback gets called only if access is granted.
             // Now you can read the file with Dart's IO.
             final bytes = await File(file.path!).readAsBytes();
 
             s += 'Bytes: ${_formatBytes(bytes)}\n\n';
           });
+          if (hasAccess != true) {
+            s += 'No access to file\n\n';
+          }
         } else if (file.uri != null && Platform.isAndroid) {
           // Handle Android file.
           // For example, use [saf_stream] package to read the file.
