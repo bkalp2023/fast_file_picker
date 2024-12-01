@@ -12,6 +12,7 @@ platforms:
   ios:
   macos:
   windows:
+  linux:
 
 dependencies:
   file_selector: ^1.0.1
