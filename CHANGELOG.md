@@ -1,3 +1,7 @@
+## 0.8.2
+
+- Deprecated: Moved to [fast_file_picker](https://pub.dev/packages/fast_file_picker).
+
 ## 0.8.1
 
 - Make `FcFilePickerPath` JSON serializable.
