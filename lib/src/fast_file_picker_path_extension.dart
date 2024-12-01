@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:accessing_security_scoped_resource/accessing_security_scoped_resource.dart';
-import 'package:fast_file_picker/fast_file_picker.dart';
+import '../fast_file_picker.dart';
 
 final _plugin = AccessingSecurityScopedResource();
 

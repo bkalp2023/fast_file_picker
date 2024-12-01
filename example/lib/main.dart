@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         _output = 'Cancelled';
                       });
                     } else {
-                      _readFiles([res]);
+                      await _readFiles([res]);
                     }
                   },
                   child: const Text('Pick File')),
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         _output = 'Cancelled';
                       });
                     } else {
-                      _readFiles(files);
+                      await _readFiles(files);
                     }
                   },
                   child: const Text('Pick Files')),
@@ -176,6 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
       String s = '';
       for (final file in files) {
         // Add file path to output.
+        // ignore: use_string_buffers
         s += 'File: $file\n';
 
         if (Platform.isIOS) {
