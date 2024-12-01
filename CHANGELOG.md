@@ -4,17 +4,17 @@
 
 ## 0.8.1
 
-- Make `FcFilePickerPath` JSON serializable.
+- Make `FastFilePickerPath` JSON serializable.
 
 ## 0.8.0
 
-- Add `name` to `FcFilePickerPath`.
+- Add `name` to `FastFilePickerPath`.
 
 ## 0.7.0
 
 - Remove `file_picker` dependency.
 - Set min iOS version to 14.0.
-- **Breaking**: File picking functions return `FcFilePickerPath` instead of `FcFilePickerXResult`.
+- **Breaking**: File picking functions return `FastFilePickerPath` instead of `FcFilePickerXResult`.
 - Return both URL and path on iOS.
 
 ## 0.6.0

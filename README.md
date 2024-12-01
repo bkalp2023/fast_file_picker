@@ -1,8 +1,6 @@
-Deprecated: Moved to [fast_file_picker](https://pub.dev/packages/fast_file_picker).
+# fast_file_picker
 
-# fc_file_picker_util
-
-[![pub package](https://img.shields.io/pub/v/fc_file_picker_util.svg)](https://pub.dev/packages/fc_file_picker_util)
+[![pub package](https://img.shields.io/pub/v/fast_file_picker.svg)](https://pub.dev/packages/fast_file_picker)
 
 |                  | Windows          | macOS                  | iOS                    | Android  |
 | ---------------- | ---------------- | ---------------------- | ---------------------- | -------- |
@@ -10,7 +8,7 @@ Deprecated: Moved to [fast_file_picker](https://pub.dev/packages/fast_file_picke
 | Pick a folder    | ✅ (Name / Path) | ✅ (Name / Path / URL) | ✅ (Name / Path / URL) | ✅ (Uri) |
 | Pick a save path | ✅ (Name / Path) | ✅ (Name / Path / URL) | ❌                     | ❌       |
 
-`fc_file_picker_util` is based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
+`fast_file_picker` is based on [file_selector](https://pub.dev/packages/file_selector) with the following differences:
 
 - On iOS and macOS, it returns both URL and path for files and folders.
 - On Android:
@@ -29,12 +27,12 @@ You need to add the following key to entitlements in order for macOS app to be a
   <true/>
 ```
 
-### `FcFilePickerPath`
+### `FastFilePickerPath`
 
-Since `fc_file_picker_util` can return path or URI or both, the result is wrapped in `FcFilePickerPath`:
+Since `fast_file_picker` can return path or URI or both, the result is wrapped in `FastFilePickerPath`:
 
 ```dart
-class FcFilePickerPath {
+class FastFilePickerPath {
   final String name;
   final String? path;
   final String? uri;
@@ -44,17 +42,17 @@ class FcFilePickerPath {
 ### Pick a file or multiple files
 
 ```dart
-/// Picks a file and return a [FcFilePickerPath].
+/// Picks a file and return a [FastFilePickerPath].
 final file = await FcFilePickerUtil.pickFile();
 
-/// Picks multiple files and return a list of [FcFilePickerPath].
+/// Picks multiple files and return a list of [FastFilePickerPath].
 final files = await FcFilePickerUtil.pickMultipleFiles();
 ```
 
 ### Pick a folder
 
 ```dart
-/// Picks a folder and return a [FcFilePickerPath].
+/// Picks a folder and return a [FastFilePickerPath].
 ///
 /// [writePermission] is only applicable on Android.
 final folder = await FcFilePickerUtil.pickFolder(writePermission: true);

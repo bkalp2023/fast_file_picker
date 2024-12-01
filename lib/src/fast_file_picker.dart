@@ -7,28 +7,28 @@ import 'package:saf_util/saf_util.dart';
 import 'package:path/path.dart' as p;
 
 /// Represents a picker path that could be either a file path or a URI.
-class FcFilePickerPath {
+class FastFilePickerPath {
   final String name;
   final String? path;
   final String? uri;
 
-  FcFilePickerPath._(this.name, this.path, this.uri);
+  FastFilePickerPath._(this.name, this.path, this.uri);
 
-  static FcFilePickerPath fromUri(String name, String uri) {
-    return FcFilePickerPath._(name, null, uri);
+  static FastFilePickerPath fromUri(String name, String uri) {
+    return FastFilePickerPath._(name, null, uri);
   }
 
-  static FcFilePickerPath fromPath(String name, String path) {
-    return FcFilePickerPath._(name, path, null);
+  static FastFilePickerPath fromPath(String name, String path) {
+    return FastFilePickerPath._(name, path, null);
   }
 
-  static FcFilePickerPath fromPathAndUri(String name, String path, String uri) {
-    return FcFilePickerPath._(name, path, uri);
+  static FastFilePickerPath fromPathAndUri(String name, String path, String uri) {
+    return FastFilePickerPath._(name, path, uri);
   }
 
   @override
   String toString() {
-    return 'FcFilePickerPath(name: $name, path: $path, uri: $uri)';
+    return 'FastFilePickerPath(name: $name, path: $path, uri: $uri)';
   }
 
   Map<String, dynamic> toJson() {
@@ -39,7 +39,7 @@ class FcFilePickerPath {
     };
   }
 
-  FcFilePickerPath.fromJson(Map<String, dynamic> json)
+  FastFilePickerPath.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         path = json['path'],
         uri = json['uri'];
@@ -52,7 +52,7 @@ class FcFilePickerUtil {
   /// Picks a file and return a
   /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
   /// If the user cancels the picker, it returns `null`.
-  static Future<FcFilePickerPath?> pickFile() async {
+  static Future<FastFilePickerPath?> pickFile() async {
     final res = await pickFilesCore();
     return res?.first;
   }
@@ -60,7 +60,7 @@ class FcFilePickerUtil {
   /// Picks multiple files and return a list of
   /// [XFile](https://pub.dev/documentation/cross_file/latest/cross_file/XFile-class.html).
   /// If the user cancels the picker, it returns `null`.
-  static Future<List<FcFilePickerPath>?> pickMultipleFiles() async {
+  static Future<List<FastFilePickerPath>?> pickMultipleFiles() async {
     return pickFilesCore(allowsMultiple: true);
   }
 
@@ -68,7 +68,7 @@ class FcFilePickerUtil {
   /// If the user cancels the picker, it returns `null`.
   ///
   /// [writePermission] is only applicable on Android.
-  static Future<FcFilePickerPath?> pickFolder(
+  static Future<FastFilePickerPath?> pickFolder(
       {required bool writePermission}) async {
     if (Platform.isAndroid) {
       final res =
@@ -76,7 +76,7 @@ class FcFilePickerUtil {
       if (res == null) {
         return null;
       }
-      return FcFilePickerPath.fromUri(res.name, res.uri);
+      return FastFilePickerPath.fromUri(res.name, res.uri);
     }
     if (Platform.isIOS) {
       final iosPicker = IosDocumentPicker();
@@ -85,7 +85,7 @@ class FcFilePickerUtil {
       if (res == null) {
         return null;
       }
-      return FcFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
+      return FastFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
     }
     if (Platform.isMacOS) {
       final macosPicker = MacosFilePicker();
@@ -93,7 +93,7 @@ class FcFilePickerUtil {
       if (res == null) {
         return null;
       }
-      return FcFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
+      return FastFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
     }
 
     final folderPath = await getDirectoryPath();
@@ -101,7 +101,7 @@ class FcFilePickerUtil {
       return null;
     }
     final folderName = p.basename(folderPath);
-    return FcFilePickerPath.fromPath(folderName, folderPath);
+    return FastFilePickerPath.fromPath(folderName, folderPath);
   }
 
   /// Picks a save file location and return a [String] path.
@@ -122,7 +122,7 @@ class FcFilePickerUtil {
   }
 
   /// Called by [pickFile] and [pickMultipleFiles].
-  static Future<List<FcFilePickerPath>?> pickFilesCore(
+  static Future<List<FastFilePickerPath>?> pickFilesCore(
       {bool? allowsMultiple}) async {
     if (Platform.isIOS) {
       final iosPicker = IosDocumentPicker();
@@ -132,7 +132,7 @@ class FcFilePickerUtil {
         return null;
       }
       final res = files
-          .map((e) => FcFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
+          .map((e) => FastFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
           .nonNulls
           .toList();
       return res.isEmpty ? null : res;
@@ -146,7 +146,7 @@ class FcFilePickerUtil {
         return null;
       }
       final res = files
-          .map((e) => FcFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
+          .map((e) => FastFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
           .nonNulls
           .toList();
       return res.isEmpty ? null : res;
@@ -157,7 +157,7 @@ class FcFilePickerUtil {
         return null;
       }
       final res =
-          files.map((e) => FcFilePickerPath.fromUri(e.name, e.uri)).toList();
+          files.map((e) => FastFilePickerPath.fromUri(e.name, e.uri)).toList();
       return res.isEmpty ? null : res;
     }
 
@@ -166,13 +166,13 @@ class FcFilePickerUtil {
       return files.isEmpty
           ? null
           : files
-              .map((e) => FcFilePickerPath.fromPath(e.name, e.path))
+              .map((e) => FastFilePickerPath.fromPath(e.name, e.path))
               .toList();
     }
 
     final file = await openFile();
     return file == null
         ? null
-        : [FcFilePickerPath.fromPath(file.name, file.path)];
+        : [FastFilePickerPath.fromPath(file.name, file.path)];
   }
 }

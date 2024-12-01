@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:fc_file_picker_util/fc_file_picker_util.dart';
+import 'package:fast_file_picker/fast_file_picker.dart';
 import 'package:saf_stream/saf_stream.dart';
 
 void main() {
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> _readFiles(List<FcFilePickerPath> files) async {
+  Future<void> _readFiles(List<FastFilePickerPath> files) async {
     try {
       String s = '';
       for (final file in files) {

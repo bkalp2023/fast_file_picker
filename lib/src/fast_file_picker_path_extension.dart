@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:accessing_security_scoped_resource/accessing_security_scoped_resource.dart';
-import 'package:fc_file_picker_util/fc_file_picker_util.dart';
+import 'package:fast_file_picker/fast_file_picker.dart';
 
 final _plugin = AccessingSecurityScopedResource();
 
-extension FcFilePickerPathExtension on FcFilePickerPath {
+extension FastFilePickerPathExtension on FastFilePickerPath {
   Future<void> accessAppleScopedResource(
-      Future<void> Function(bool hasAccess, FcFilePickerPath pickerPath)
+      Future<void> Function(bool hasAccess, FastFilePickerPath pickerPath)
           action) async {
     if (uri == null || path == null) {
       return;
