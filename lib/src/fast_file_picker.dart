@@ -41,9 +41,9 @@ class FastFilePickerPath {
   }
 
   FastFilePickerPath.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        path = json['path'],
-        uri = json['uri'];
+      : name = json['name'] as String,
+        path = json['path'] as String?,
+        uri = json['uri'] as String?;
 }
 
 final SafUtil _safUtil = SafUtil();

@@ -79,7 +79,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.8.2"
+    version: "0.0.1"
   file_selector:
     dependency: transitive
     description:
@@ -150,7 +150,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_lints:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: flutter_lints
       sha256: "5398f14efa795ffb7a33e9b6a08798b26a180edac4ad7db3f231e40f82ce11e1"
@@ -255,6 +255,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
+  mgenware_dart_lints:
+    dependency: "direct dev"
+    description:
+      name: mgenware_dart_lints
+      sha256: "1fbc49f4e02a7c6500b37361a70bd9cc3c6b822fdfa0badd3f9dfd817269e791"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   path:
     dependency: transitive
     description:
