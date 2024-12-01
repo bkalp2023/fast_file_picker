@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               OutlinedButton(
                   onPressed: () async {
-                    final res = await FcFilePickerUtil.pickFile();
+                    final res = await FastFilePicker.pickFile();
                     if (res == null) {
                       setState(() {
                         _output = 'Cancelled';
@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 10),
               OutlinedButton(
                   onPressed: () async {
-                    final files = await FcFilePickerUtil.pickMultipleFiles();
+                    final files = await FastFilePicker.pickMultipleFiles();
                     if (files == null) {
                       setState(() {
                         _output = 'Cancelled';
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () async {
                     try {
                       // Handle selected folder.
-                      final folder = await FcFilePickerUtil.pickFolder(
+                      final folder = await FastFilePicker.pickFolder(
                           writePermission: false);
                       if (folder == null) {
                         setState(() {
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
               OutlinedButton(
                   onPressed: () async {
                     try {
-                      final savePath = await FcFilePickerUtil.pickSaveFile();
+                      final savePath = await FastFilePicker.pickSaveFile();
                       setState(() {
                         _output = savePath?.toString() ?? 'Cancelled';
                       });

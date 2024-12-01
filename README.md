@@ -45,7 +45,7 @@ class FastFilePickerPath {
 - Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file reading or [saf_util](https://pub.dev/packages/saf_util) for file info.
 
 ```dart
-class FcFilePickerUtil {
+class FastFilePicker {
   /// Picks a file and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
   static Future<FastFilePickerPath?> pickFile();
@@ -59,7 +59,7 @@ class FcFilePickerUtil {
 Example:
 
 ```dart
-final files = await FcFilePickerUtil.pickMultipleFiles();
+final files = await FastFilePicker.pickMultipleFiles();
 if (files == null) {
   setState(() {
     _output = 'User canceled the picker';
@@ -99,7 +99,7 @@ for (final file in files) {
 - Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file IO inside the folder or [saf_util](https://pub.dev/packages/saf_util) for folder operations.
 
 ```dart
-class FcFilePickerUtil {
+class FastFilePicker {
   /// Picks a folder and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
   ///
@@ -113,7 +113,7 @@ Example:
 
 ```dart
 // Handle selected folder.
-final folder = await FcFilePickerUtil.pickFolder(
+final folder = await FastFilePicker.pickFolder(
     writePermission: false);
 if (folder == null) {
   setState(() {
@@ -176,7 +176,7 @@ if (Platform.isIOS) {
 - Windows / macOS / Linux: Use Dart IO to handle the save path.
 
 ```dart
-class FcFilePickerUtil {
+class FastFilePicker {
   /// Picks a save file location and return a [String] path.
   /// You can optionally specify a default file name via [defaultName].
   /// If the user cancels the picker, it returns `null`.
@@ -187,7 +187,7 @@ class FcFilePickerUtil {
 Example:
 
 ```dart
-final savePath = await FcFilePickerUtil.pickSaveFile();
+final savePath = await FastFilePicker.pickSaveFile();
 if (savePath == null) {
   setState(() {
     _output = 'User canceled the picker';
@@ -195,4 +195,51 @@ if (savePath == null) {
   return;
 }
 // Handle save path using Dart IO.
+```
+
+### Apple scoped resource
+
+On iOS and macOS (if you are dealing with iCloud files), you need to request access to the file or folder before accessing it. `fast_file_picker` has extension methods on `FastFilePickerPath` to help you with this. Namely `accessAppleScopedResource` and `releaseAppleScopedResource`.
+
+```dart
+final pickerResult = await FastFilePickerUtil.pickFile(); // or pickFolder().
+if (pickerResult == null) {
+  // User canceled the picker.
+  return;
+}
+if (Platform.isIOS) {
+  final hasAccess = await pickerResult.accessAppleScopedResource();
+  try {
+    if (hasAccess != true) {
+      // Denied access or not supported.
+      return;
+    }
+
+    /** Access the file or folder */
+  } finally {
+    // Always release the access when done.
+    await pickerResult.releaseAppleScopedResource(hasAccess);
+  }
+}
+```
+
+There is also a shorthand method `useAppleScopedResource` that combines the above two methods:
+
+```dart
+final pickerResult = await FastFilePickerUtil.pickFile(); // or pickFolder().
+if (pickerResult == null) {
+  // User canceled the picker.
+  return;
+}
+if (Platform.isIOS) {
+  // This will automatically release the access when done.
+  await pickerResult.useAppleScopedResource((hasAccess, file) async {
+    if (hasAccess != true) {
+      // Denied access or not supported.
+      return;
+    }
+
+    /** Access the file or folder */
+  });
+}
 ```

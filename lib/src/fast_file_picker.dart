@@ -48,7 +48,7 @@ class FastFilePickerPath {
 
 final SafUtil _safUtil = SafUtil();
 
-class FcFilePickerUtil {
+class FastFilePicker {
   /// Picks a file and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
   static Future<FastFilePickerPath?> pickFile() async {
