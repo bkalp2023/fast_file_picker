@@ -120,9 +120,13 @@ class FastFilePicker {
   }
 
   /// Called by [pickFile] and [pickMultipleFiles].
-  static Future<List<FastFilePickerPath>?> pickFilesCore(
-      {bool? allowsMultiple}) async {
-    if (Platform.isIOS) {
+  ///
+  /// [allowsMultiple] if `true`, allows the user to pick multiple files.
+  static Future<List<FastFilePickerPath>?> pickFilesCore({
+    bool? allowsMultiple,
+    bool? useFileSelector,
+  }) async {
+    if (Platform.isIOS && useFileSelector != true) {
       final iosPicker = IosDocumentPicker();
       final files = await iosPicker.pick(IosDocumentPickerType.file,
           multiple: allowsMultiple ?? false);
@@ -135,8 +139,7 @@ class FastFilePicker {
           .toList();
       return res.isEmpty ? null : res;
     }
-    // Use fast native macOS picker.
-    if (Platform.isMacOS) {
+    if (Platform.isMacOS && useFileSelector != true) {
       final macosPicker = MacosFilePicker();
       final files = await macosPicker.pick(MacosFilePickerMode.file,
           allowsMultiple: allowsMultiple ?? false);
@@ -149,7 +152,7 @@ class FastFilePicker {
           .toList();
       return res.isEmpty ? null : res;
     }
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid && useFileSelector != true) {
       final files = await _safUtil.pickFiles(multiple: allowsMultiple ?? false);
       if (files == null || files.isEmpty) {
         return null;
