@@ -66,9 +66,12 @@ class FastFilePicker {
   /// If the user cancels the picker, it returns `null`.
   ///
   /// [writePermission] is only applicable on Android.
-  static Future<FastFilePickerPath?> pickFolder(
-      {required bool writePermission}) async {
-    if (Platform.isAndroid) {
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  static Future<FastFilePickerPath?> pickFolder({
+    required bool writePermission,
+    bool? useFileSelector,
+  }) async {
+    if (Platform.isAndroid && useFileSelector != true) {
       final res =
           await _safUtil.pickDirectory(writePermission: writePermission);
       if (res == null) {
@@ -76,7 +79,7 @@ class FastFilePicker {
       }
       return FastFilePickerPath.fromUri(res.name, res.uri);
     }
-    if (Platform.isIOS) {
+    if (Platform.isIOS && useFileSelector != true) {
       final iosPicker = IosDocumentPicker();
       final res =
           (await iosPicker.pick(IosDocumentPickerType.directory))?.first;
@@ -85,7 +88,7 @@ class FastFilePicker {
       }
       return FastFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
     }
-    if (Platform.isMacOS) {
+    if (Platform.isMacOS && useFileSelector != true) {
       final macosPicker = MacosFilePicker();
       final res = (await macosPicker.pick(MacosFilePickerMode.folder))?.first;
       if (res == null) {
@@ -105,8 +108,12 @@ class FastFilePicker {
   /// Picks a save file location and return a [String] path.
   /// You can optionally specify a default file name via [defaultName].
   /// If the user cancels the picker, it returns `null`.
-  static Future<String?> pickSaveFile({String? defaultName}) async {
-    if (Platform.isMacOS) {
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  static Future<String?> pickSaveFile({
+    String? defaultName,
+    bool? useFileSelector,
+  }) async {
+    if (Platform.isMacOS && useFileSelector != true) {
       final macosPicker = MacosFilePicker();
       final res = await macosPicker.pick(MacosFilePickerMode.saveFile,
           defaultName: defaultName);
@@ -122,6 +129,7 @@ class FastFilePicker {
   /// Called by [pickFile] and [pickMultipleFiles].
   ///
   /// [allowsMultiple] if `true`, allows the user to pick multiple files.
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
   static Future<List<FastFilePickerPath>?> pickFilesCore({
     bool? allowsMultiple,
     bool? useFileSelector,
