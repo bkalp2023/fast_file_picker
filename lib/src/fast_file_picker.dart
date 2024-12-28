@@ -51,15 +51,24 @@ final SafUtil _safUtil = SafUtil();
 class FastFilePicker {
   /// Picks a file and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
-  static Future<FastFilePickerPath?> pickFile() async {
-    final res = await pickFilesCore();
+  ///
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  static Future<FastFilePickerPath?> pickFile({
+    bool? useFileSelector,
+  }) async {
+    final res = await pickFilesCore(useFileSelector: useFileSelector);
     return res?.first;
   }
 
   /// Picks multiple files and return a list of [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
-  static Future<List<FastFilePickerPath>?> pickMultipleFiles() async {
-    return pickFilesCore(allowsMultiple: true);
+  ///
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  static Future<List<FastFilePickerPath>?> pickMultipleFiles({
+    bool? useFileSelector,
+  }) async {
+    return pickFilesCore(
+        allowsMultiple: true, useFileSelector: useFileSelector);
   }
 
   /// Picks a folder and return a [FastFilePickerPath].

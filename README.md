@@ -247,3 +247,11 @@ if (Platform.isIOS) {
   }
 }
 ```
+
+### Force using the internal `file_selector` plugin
+
+If you want to force using the internal `file_selector` plugin, you can use `useFileSelector: true`:
+
+```dart
+final files = await FastFilePicker.pickMultipleFiles(useFileSelector: true);
+```

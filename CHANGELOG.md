@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Add `useFileSelector` option to allow force using the internal `file_selector` plugin.
+
 ## 0.1.0
 
 - Return hasAccess in `useAppleScopedResource`.
