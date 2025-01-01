@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: accessing_security_scoped_resource
-      sha256: ca9697ebd4028d3b400891af7a5174933b28494d16bdb5f8b2ddccb22a949273
+      sha256: ce19f4d848a477ab95efb2766770928e3233735dc38d4d9856ce9acedeb38cf8
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0"
   async:
     dependency: transitive
     description:
@@ -79,7 +79,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.0"
+    version: "0.2.0"
   file_selector:
     dependency: transitive
     description:
@@ -187,10 +187,10 @@ packages:
     dependency: transitive
     description:
       name: ios_document_picker
-      sha256: fbf1936ccebcd5a8d563c9335ca80006f2d9ce619a68b7ec6a06e799782ac2ee
+      sha256: d7cbc61366602f6fd74a5bfeeecf68ad553ef91a6b1bb6d406dd7808d694d5c4
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -227,10 +227,10 @@ packages:
     dependency: transitive
     description:
       name: macos_file_picker
-      sha256: d5a2e4791ec356134fb57e7719e3c0e3f8d81ffc7bdc948c14dbd2792280fa86
+      sha256: "336cfa134727d0a123856e666f833a2c219bb2d2c1a7554538a610b52b7fcf4e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.0"
+    version: "0.5.0"
   matcher:
     dependency: transitive
     description:

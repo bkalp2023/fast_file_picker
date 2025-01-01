@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:file_selector/file_selector.dart';
 import 'package:ios_document_picker/ios_document_picker.dart';
-import 'package:ios_document_picker/ios_document_picker_platform_interface.dart';
+import 'package:ios_document_picker/types.dart';
 import 'package:macos_file_picker/macos_file_picker.dart';
 import 'package:saf_util/saf_util.dart';
 import 'package:path/path.dart' as p;
