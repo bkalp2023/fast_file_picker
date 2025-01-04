@@ -30,6 +30,7 @@ Since `fast_file_picker` can return path or URI or both, the result is wrapped i
 
 ```dart
 class FastFilePickerPath {
+  // The name of the file or directory.
   final String name;
   final String? path;
   final String? uri;
@@ -40,8 +41,8 @@ class FastFilePickerPath {
 
 **Platform notes:**
 
-- Windows / macOS / Linux: Use Dart IO to access the file.
-- iOS: call `useAppleScopedResource` or `accessAppleScopedResource` to gain access first, then use Dart IO to access the file. See 'Apple scoped resource' section below for details.
+- Windows / macOS / Linux: Use Dart IO to access the file path.
+- iOS: call `useAppleScopedResource` or `accessAppleScopedResource` to gain access first, then use Dart IO to access the file path.
 - Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file reading or [saf_util](https://pub.dev/packages/saf_util) for file info.
 
 ```dart
@@ -96,9 +97,9 @@ for (final file in files) {
 
 **Platform notes:**
 
-- Windows / macOS / Linux: Use Dart IO to access the folder.
-- iOS: call `useAppleScopedResource` or `accessAppleScopedResource` to gain access first, then use Dart IO to access the folder. See 'Apple scoped resource' section below for details.
-- Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file IO inside the folder or [saf_util](https://pub.dev/packages/saf_util) for folder operations.
+- Windows / macOS / Linux: Use Dart IO to access the folder path.
+- iOS: call `useAppleScopedResource` or `accessAppleScopedResource` to gain access first, then use Dart IO to access the folder path.
+- Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file access or [saf_util](https://pub.dev/packages/saf_util) for other operations.
 
 ```dart
 class FastFilePicker {
