@@ -8,10 +8,11 @@
 | ---------------- | ------------------ | ------------- | ------------------ | --------------- |
 | Pick files       | ✅ (Name/Path/URL) | ✅ (Name/Uri) | ✅ (Name/Path/URL) | ✅ (Name/Path)  |
 | Pick a folder    | ✅ (Name/Path/URL) | ✅ (Name/Uri) | ✅ (Name/Path/URL) | ✅ (Name/Path)  |
-| Pick a save path | ⚠️                 | ⚠️            | ✅ (Name/Path/URL) | ✅ (Name/Path)  |
+| Pick a save path | ❓                 | ❓            | ✅ (Name/Path/URL) | ✅ (Name/Path)  |
 
-- For each operation, please **follow the platform-specific notes below**.
-- ⚠️: It's recommended to use mobile share menu on iOS and Android to save files.
+- ⚠️: For each operation, please **follow the platform-specific notes below**.
+- ⚠️: This package follows the single responsibility principle. It's intended to only return OS file info. It's up to you to handle file access for each platform using the mentioned packages from README or other packages.
+- ❓: Supported. But it's recommended to use share menu on iOS and Android to share/save files.
 
 ## Usage
 
