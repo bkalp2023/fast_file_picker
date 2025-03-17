@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/fast_file_picker.svg)](https://pub.dev/packages/fast_file_picker)
 
-`fast_file_picker` is a fast file picker for Flutter. To achieve the best performance, it returns OS file info directly and never performs any file copying or conversion. It supports picking files, folders, and save paths on all platforms. Partly based on [file_selector](https://pub.dev/packages/file_selector).
+`fast_file_picker` is a fast file picker for Flutter. To achieve the best performance, it returns OS file info directly and never performs any file copying or conversion. It supports picking files, folders, and save paths on all platforms. Based on [file_selector](https://pub.dev/packages/file_selector).
 
 |                  | iOS                | Android       | macOS              | Windows / Linux |
 | ---------------- | ------------------ | ------------- | ------------------ | --------------- |
@@ -50,11 +50,11 @@ class FastFilePickerPath {
 class FastFilePicker {
   /// Picks a file and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
-  static Future<FastFilePickerPath?> pickFile();
+  static Future<FastFilePickerPath?> pickFile(/* Same parameters as file_selector */);
 
   /// Picks multiple files and return a list of [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
-  static Future<List<FastFilePickerPath>?> pickMultipleFiles();
+  static Future<List<FastFilePickerPath>?> pickMultipleFiles(/* Same parameters as file_selector */);
 }
 ```
 

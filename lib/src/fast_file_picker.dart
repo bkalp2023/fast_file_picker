@@ -1,10 +1,11 @@
 import 'dart:io';
+
 import 'package:file_selector/file_selector.dart';
 import 'package:ios_document_picker/ios_document_picker.dart';
 import 'package:ios_document_picker/types.dart';
 import 'package:macos_file_picker/macos_file_picker.dart';
-import 'package:saf_util/saf_util.dart';
 import 'package:path/path.dart' as p;
+import 'package:saf_util/saf_util.dart';
 
 /// Represents a picker path that could be either a file path or a URI.
 class FastFilePickerPath {
@@ -53,10 +54,21 @@ class FastFilePicker {
   /// If the user cancels the picker, it returns `null`.
   ///
   /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [acceptedTypeGroups] is a list of [XTypeGroup] that specifies the accepted file types.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
   static Future<FastFilePickerPath?> pickFile({
+    List<XTypeGroup> acceptedTypeGroups = const <XTypeGroup>[],
+    String? initialDirectory,
+    String? confirmButtonText,
     bool? useFileSelector,
   }) async {
-    final res = await pickFilesCore(useFileSelector: useFileSelector);
+    final res = await pickFilesCore(
+      useFileSelector: useFileSelector,
+      acceptedTypeGroups: acceptedTypeGroups,
+      initialDirectory: initialDirectory,
+      confirmButtonText: confirmButtonText,
+    );
     return res?.first;
   }
 
@@ -64,11 +76,22 @@ class FastFilePicker {
   /// If the user cancels the picker, it returns `null`.
   ///
   /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [acceptedTypeGroups] is a list of [XTypeGroup] that specifies the accepted file types.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
   static Future<List<FastFilePickerPath>?> pickMultipleFiles({
+    List<XTypeGroup> acceptedTypeGroups = const <XTypeGroup>[],
+    String? initialDirectory,
+    String? confirmButtonText,
     bool? useFileSelector,
   }) async {
     return pickFilesCore(
-        allowsMultiple: true, useFileSelector: useFileSelector);
+      allowsMultiple: true,
+      useFileSelector: useFileSelector,
+      acceptedTypeGroups: acceptedTypeGroups,
+      initialDirectory: initialDirectory,
+      confirmButtonText: confirmButtonText,
+    );
   }
 
   /// Picks a folder and return a [FastFilePickerPath].
@@ -139,14 +162,21 @@ class FastFilePicker {
   ///
   /// [allowsMultiple] if `true`, allows the user to pick multiple files.
   /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [acceptedTypeGroups] is a list of [XTypeGroup] that specifies the accepted file types.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
   static Future<List<FastFilePickerPath>?> pickFilesCore({
     bool? allowsMultiple,
+    List<XTypeGroup> acceptedTypeGroups = const <XTypeGroup>[],
+    String? initialDirectory,
+    String? confirmButtonText,
     bool? useFileSelector,
   }) async {
     if (Platform.isIOS && useFileSelector != true) {
       final iosPicker = IosDocumentPicker();
+      final utiTypes = _typeGroupsToUtiList(acceptedTypeGroups);
       final files = await iosPicker.pick(IosDocumentPickerType.file,
-          multiple: allowsMultiple ?? false);
+          multiple: allowsMultiple ?? false, allowedUtiTypes: utiTypes);
       if (files == null) {
         return null;
       }
@@ -158,8 +188,15 @@ class FastFilePicker {
     }
     if (Platform.isMacOS && useFileSelector != true) {
       final macosPicker = MacosFilePicker();
-      final files = await macosPicker.pick(MacosFilePickerMode.file,
-          allowsMultiple: allowsMultiple ?? false);
+      final utiTypes = _typeGroupsToUtiList(acceptedTypeGroups);
+      final extensions = _typeGroupsToExtensionList(acceptedTypeGroups);
+
+      final files = await macosPicker.pick(
+        MacosFilePickerMode.file,
+        allowsMultiple: allowsMultiple ?? false,
+        allowedUtiTypes: utiTypes,
+        allowedFileExtensions: extensions,
+      );
       if (files == null) {
         return null;
       }
@@ -170,7 +207,9 @@ class FastFilePicker {
       return res.isEmpty ? null : res;
     }
     if (Platform.isAndroid && useFileSelector != true) {
-      final files = await _safUtil.pickFiles(multiple: allowsMultiple ?? false);
+      final mimeTypes = _typeGroupsToMimeList(acceptedTypeGroups);
+      final files = await _safUtil.pickFiles(
+          multiple: allowsMultiple ?? false, mimeTypes: mimeTypes);
       if (files == null || files.isEmpty) {
         return null;
       }
@@ -180,7 +219,11 @@ class FastFilePicker {
     }
 
     if (allowsMultiple == true) {
-      final files = await openFiles();
+      final files = await openFiles(
+        acceptedTypeGroups: acceptedTypeGroups,
+        initialDirectory: initialDirectory,
+        confirmButtonText: confirmButtonText,
+      );
       return files.isEmpty
           ? null
           : files
@@ -188,9 +231,34 @@ class FastFilePicker {
               .toList();
     }
 
-    final file = await openFile();
+    final file = await openFile(
+      acceptedTypeGroups: acceptedTypeGroups,
+      initialDirectory: initialDirectory,
+      confirmButtonText: confirmButtonText,
+    );
     return file == null
         ? null
         : [FastFilePickerPath.fromPath(file.name, file.path)];
+  }
+
+  static List<String>? _typeGroupsToUtiList(List<XTypeGroup> typeGroups) {
+    final list = typeGroups
+        .map((e) => e.uniformTypeIdentifiers)
+        .nonNulls
+        .expand((i) => i)
+        .toList();
+    return list.isEmpty ? null : list;
+  }
+
+  static List<String>? _typeGroupsToMimeList(List<XTypeGroup> typeGroups) {
+    final list =
+        typeGroups.map((e) => e.mimeTypes).nonNulls.expand((i) => i).toList();
+    return list.isEmpty ? null : list;
+  }
+
+  static List<String>? _typeGroupsToExtensionList(List<XTypeGroup> typeGroups) {
+    final list =
+        typeGroups.map((e) => e.extensions).nonNulls.expand((i) => i).toList();
+    return list.isEmpty ? null : list;
   }
 }
