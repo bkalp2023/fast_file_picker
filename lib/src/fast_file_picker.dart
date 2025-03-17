@@ -99,13 +99,17 @@ class FastFilePicker {
   ///
   /// [writePermission] is only applicable on Android.
   /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
   static Future<FastFilePickerPath?> pickFolder({
     required bool writePermission,
     bool? useFileSelector,
+    String? initialDirectory,
+    String? confirmButtonText,
   }) async {
     if (Platform.isAndroid && useFileSelector != true) {
-      final res =
-          await _safUtil.pickDirectory(writePermission: writePermission);
+      final res = await _safUtil.pickDirectory(
+          writePermission: writePermission, initialUri: initialDirectory);
       if (res == null) {
         return null;
       }
@@ -122,14 +126,20 @@ class FastFilePicker {
     }
     if (Platform.isMacOS && useFileSelector != true) {
       final macosPicker = MacosFilePicker();
-      final res = (await macosPicker.pick(MacosFilePickerMode.folder))?.first;
+      final res = (await macosPicker.pick(
+        MacosFilePickerMode.folder,
+        initialDirectory: initialDirectory,
+      ))
+          ?.first;
       if (res == null) {
         return null;
       }
       return FastFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
     }
 
-    final folderPath = await getDirectoryPath();
+    final folderPath = await getDirectoryPath(
+        initialDirectory: initialDirectory,
+        confirmButtonText: confirmButtonText);
     if (folderPath == null) {
       return null;
     }
@@ -138,23 +148,39 @@ class FastFilePicker {
   }
 
   /// Picks a save file location and return a [String] path.
-  /// You can optionally specify a default file name via [defaultName].
+  /// You can optionally specify a default file name via [suggestedName].
   /// If the user cancels the picker, it returns `null`.
   /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [suggestedName] is the default file name.
+  /// [acceptedTypeGroups] is a list of [XTypeGroup] that specifies the accepted file types.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
   static Future<String?> pickSaveFile({
-    String? defaultName,
+    List<XTypeGroup> acceptedTypeGroups = const <XTypeGroup>[],
+    String? initialDirectory,
+    String? suggestedName,
+    String? confirmButtonText,
     bool? useFileSelector,
   }) async {
     if (Platform.isMacOS && useFileSelector != true) {
       final macosPicker = MacosFilePicker();
+      final utiTypes = _typeGroupsToUtiList(acceptedTypeGroups);
+      final extensions = _typeGroupsToExtensionList(acceptedTypeGroups);
+
       final res = await macosPicker.pick(MacosFilePickerMode.saveFile,
-          defaultName: defaultName);
+          defaultName: suggestedName,
+          allowedUtiTypes: utiTypes,
+          allowedFileExtensions: extensions);
       if (res == null) {
         return null;
       }
       return res.first.path;
     }
-    final res = await getSaveLocation(suggestedName: defaultName);
+    final res = await getSaveLocation(
+        suggestedName: suggestedName,
+        initialDirectory: initialDirectory,
+        acceptedTypeGroups: acceptedTypeGroups,
+        confirmButtonText: confirmButtonText);
     return res?.path;
   }
 

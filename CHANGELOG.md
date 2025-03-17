@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Support all `file_selector` params.
+
 ## 0.4.0
 
 - Deprecate `useAppleScopedResource` in favor of `tryUseAppleScopedResource`.

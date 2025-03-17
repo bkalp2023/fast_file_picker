@@ -50,11 +50,21 @@ class FastFilePickerPath {
 class FastFilePicker {
   /// Picks a file and return a [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
-  static Future<FastFilePickerPath?> pickFile(/* Same parameters as file_selector */);
+  ///
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [acceptedTypeGroups] is a list of [XTypeGroup] that specifies the accepted file types.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
+  static Future<FastFilePickerPath?> pickFile(/* Same params as file_selector */);
 
   /// Picks multiple files and return a list of [FastFilePickerPath].
   /// If the user cancels the picker, it returns `null`.
-  static Future<List<FastFilePickerPath>?> pickMultipleFiles(/* Same parameters as file_selector */);
+  ///
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [acceptedTypeGroups] is a list of [XTypeGroup] that specifies the accepted file types.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
+  static Future<List<FastFilePickerPath>?> pickMultipleFiles(/* Same params as file_selector */);
 }
 ```
 
@@ -110,8 +120,12 @@ class FastFilePicker {
   /// If the user cancels the picker, it returns `null`.
   ///
   /// [writePermission] is only applicable on Android.
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
   static Future<FastFilePickerPath?> pickFolder(
-      {required bool writePermission});
+      {required bool writePermission,
+      /* Same params as file_selector */});
 }
 ```
 
@@ -185,9 +199,14 @@ if (Platform.isIOS) {
 ```dart
 class FastFilePicker {
   /// Picks a save file location and return a [String] path.
-  /// You can optionally specify a default file name via [defaultName].
+  /// You can optionally specify a default file name via [suggestedName].
   /// If the user cancels the picker, it returns `null`.
-  static Future<String?> pickSaveFile({String? defaultName});
+  /// [useFileSelector] whether to force using the internal file_picker plugin.
+  /// [suggestedName] is the default file name.
+  /// [acceptedTypeGroups] is a list of [XTypeGroup] that specifies the accepted file types.
+  /// [initialDirectory] is the initial directory to open the picker.
+  /// [confirmButtonText] is the text to display on the confirm button.
+  static Future<String?> pickSaveFile(/* Same params as file_selector */);
 }
 ```
 
