@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: accessing_security_scoped_resource
-      sha256: "43742ef70426b28fcc436537cd9ee4a9bbb1fbd5d8cb2d7b9d04067c4e3a4691"
+      sha256: afb84f50ecca60dda51b93a4d92e9e22776d897b29f280374448ae8877160e75
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.4.0"
   async:
     dependency: transitive
     description:
@@ -79,7 +79,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.3.0"
+    version: "0.3.1"
   file_selector:
     dependency: transitive
     description:
@@ -92,10 +92,10 @@ packages:
     dependency: transitive
     description:
       name: file_selector_android
-      sha256: "98ac58e878b05ea2fdb204e7f4fc4978d90406c9881874f901428e01d3b18fbc"
+      sha256: f3a3d48a36d1640b4dca22a086f26b426c246925a80eddc2953120775fbcf86a
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1+12"
+    version: "0.5.1+13"
   file_selector_ios:
     dependency: transitive
     description:
@@ -283,10 +283,10 @@ packages:
     dependency: "direct main"
     description:
       name: saf_stream
-      sha256: f9258bc3b39256e0af3de7c05a70a4c7ac846d186a3ea8c1e5bef7b53876c566
+      sha256: f48b9f134d0cd1047a0f58539e967400f3a15846482911a2d892b1851385ce27
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.1"
+    version: "0.11.2"
   saf_util:
     dependency: "direct main"
     description:
@@ -382,4 +382,4 @@ packages:
     version: "1.1.1"
 sdks:
   dart: ">=3.7.0-0 <4.0.0"
-  flutter: ">=3.24.0"
+  flutter: ">=3.27.0"
