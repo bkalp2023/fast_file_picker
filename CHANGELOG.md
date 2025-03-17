@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Deprecate `useAppleScopedResource` in favor of `tryUseAppleScopedResource`.
+
 ## 0.3.0
 
 - Add Swift Package Manager support.

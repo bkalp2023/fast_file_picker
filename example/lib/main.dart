@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:fast_file_picker/fast_file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:saf_stream/saf_stream.dart';
 import 'package:saf_util/saf_util.dart';
 
@@ -98,9 +98,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       if (Platform.isIOS) {
                         // Handle iOS folder.
 
-                        // Use [useAppleScopedResource] to request access to the folder.
-                        final hasAccess =
-                            await folder.useAppleScopedResource((folder) async {
+                        // Use [tryUseAppleScopedResource] to request access to the folder.
+                        await folder.tryUseAppleScopedResource(
+                            (hasAccess, folder) async {
+                          if (!hasAccess) {
+                            setState(() {
+                              _output = 'No access to folder';
+                            });
+                            return;
+                          }
                           // Callback gets called only if access is granted.
                           final subFileNames =
                               (await Directory(folder.path!).list().toList())
@@ -111,12 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 'Folder: $folder\n\nSubfiles: $subFileNames';
                           });
                         });
-
-                        if (hasAccess != true) {
-                          setState(() {
-                            _output = 'No access to folder';
-                          });
-                        }
                       } else if (Platform.isAndroid && folder.uri != null) {
                         // Handle Android folder.
 
@@ -181,17 +181,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
         if (Platform.isIOS) {
           // Handle iOS file.
-          // Use [useAppleScopedResource] to request access to the file.
-          final hasAccess = await file.useAppleScopedResource((file) async {
+          // Use [tryUseAppleScopedResource] to request access to the file.
+          await file.tryUseAppleScopedResource((hasAccess, file) async {
+            if (!hasAccess) {
+              s += 'No access to file\n\n';
+              return;
+            }
             // Callback gets called only if access is granted.
             // Now you can read the file with Dart's IO.
             final bytes = await File(file.path!).readAsBytes();
 
             s += 'Bytes: ${_formatBytes(bytes)}\n\n';
           });
-          if (hasAccess != true) {
-            s += 'No access to file\n\n';
-          }
         } else if (file.uri != null && Platform.isAndroid) {
           // Handle Android file.
           // For example, use [saf_stream] package to read the file.
