@@ -91,7 +91,7 @@ for (final file in files) {
         });
         return;
       }
-      // Callback gets called only if access is granted.
+      // Access granted.
       // Now you can read the file with Dart's IO.
       final bytes = await File(file.path!).readAsBytes();
     });
@@ -153,7 +153,7 @@ if (Platform.isIOS) {
       });
       return;
     }
-    // Callback gets called only if access is granted.
+    // Access granted.
     // You can access the folder only if [hasAccess] is true.
     final subFileNames =
         (await Directory(folder.path!).list().toList())

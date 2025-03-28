@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                             return;
                           }
-                          // Callback gets called only if access is granted.
+                          // Access granted.
                           final subFileNames =
                               (await Directory(folder.path!).list().toList())
                                   .map((e) => e.path);
@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
               s += 'No access to file\n\n';
               return;
             }
-            // Callback gets called only if access is granted.
+            // Access granted.
             // Now you can read the file with Dart's IO.
             final bytes = await File(file.path!).readAsBytes();
 
