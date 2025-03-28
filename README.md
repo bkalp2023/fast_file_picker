@@ -223,9 +223,9 @@ if (savePath == null) {
 // Handle save path using Dart IO.
 ```
 
-### Force using the internal `file_selector` plugin
+### Switch to `file_selector` implementation
 
-If you want to force using the internal `file_selector` plugin, you can use `useFileSelector: true`:
+If you want to use `file_selector` implementation for a particular API, pass `useFileSelector: true`:
 
 ```dart
 final files = await FastFilePicker.pickMultipleFiles(useFileSelector: true);
