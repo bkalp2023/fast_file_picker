@@ -1,3 +1,7 @@
+## 0.4.2
+
+- Bump some dependencies.
+
 ## 0.4.0
 
 - Support all `file_selector` params.
