@@ -27,4 +27,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mgenware_dart_lints: ^7.0.0
+  mgenware_dart_lints: ^8.0.0
