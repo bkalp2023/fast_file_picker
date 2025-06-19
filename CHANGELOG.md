@@ -1,3 +1,7 @@
+## 0.4.6
+
+- Make sure action always runs in `tryUseAppleScopedResource`.
+
 ## 0.4.2
 
 - Bump some dependencies.

@@ -88,11 +88,15 @@ extension FastFilePickerPathExtension on FastFilePickerPath {
     }
     bool hasAccess = false;
     try {
-      hasAccess =
-          await _plugin.startAccessingSecurityScopedResourceWithURL(uri!);
-      if (hasAccess) {
-        await action(hasAccess, this);
+      try {
+        hasAccess =
+            await _plugin.startAccessingSecurityScopedResourceWithURL(uri!);
+      } catch (e) {
+        // Just in case the plugin throws an error,
+        // we catch it and assume access is denied.
+        // This makes sure the action is still called.
       }
+      await action(hasAccess, this);
     } finally {
       if (hasAccess) {
         await _plugin.stopAccessingSecurityScopedResourceWithURL(uri!);
