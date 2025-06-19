@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:fast_file_picker/fast_file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ns_file_coordinator_util/ns_file_coordinator_util.dart';
 import 'package:saf_stream/saf_stream.dart';
 import 'package:saf_util/saf_util.dart';
 
@@ -38,6 +39,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _safStream = SafStream();
   final _safUtil = SafUtil();
+  final _nsFileCoordinatorUtil = NsFileCoordinatorUtil();
 
   String _output = '';
 
@@ -108,9 +110,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             return;
                           }
                           // Access granted.
-                          final subFileNames =
-                              (await Directory(folder.path!).list().toList())
-                                  .map((e) => e.path);
+                          // Use `ns_file_coordinator_util` to read the folder.
+                          final subFileNames = await _nsFileCoordinatorUtil
+                              .listContents(folder.uri!);
 
                           setState(() {
                             _output =
@@ -188,8 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
               return;
             }
             // Access granted.
-            // Now you can read the file with Dart's IO.
-            final bytes = await File(file.path!).readAsBytes();
+            // Read the file using `ns_file_coordinator_util`.
+            final bytes = await _nsFileCoordinatorUtil.readFileBytes(file.uri!);
 
             s += 'Bytes: ${_formatBytes(bytes)}\n\n';
           });

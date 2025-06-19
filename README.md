@@ -43,7 +43,7 @@ class FastFilePickerPath {
 **Platform notes:**
 
 - Windows / macOS / Linux: Use Dart IO to access the file path.
-- iOS: call `tryUseAppleScopedResource` first. If access is granted, use Dart IO to access the file path or URL.
+- iOS: call `tryUseAppleScopedResource` first. If access is granted, use `ns_file_coordinator_util` to access the file.
 - Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file reading or [saf_util](https://pub.dev/packages/saf_util) for file info.
 
 ```dart
@@ -92,8 +92,8 @@ for (final file in files) {
         return;
       }
       // Access granted.
-      // Now you can read the file with Dart's IO.
-      final bytes = await File(file.path!).readAsBytes();
+      // Read the file using `ns_file_coordinator_util`.
+      final bytes = await _nsFileCoordinatorUtil.readFileBytes(file.uri!);
     });
   } else if (file.uri != null && Platform.isAndroid) {
     // Handle Android file.
@@ -110,9 +110,9 @@ for (final file in files) {
 
 **Platform notes:**
 
-- Windows / macOS / Linux: Use Dart IO to access the folder path.
-- iOS: call `tryUseAppleScopedResource` to gain access first. If access is granted, use Dart IO to access the folder path.
-- Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file access or [saf_util](https://pub.dev/packages/saf_util) for other operations.
+- Windows / macOS / Linux: Use Dart IO to access the folder.
+- iOS: call `tryUseAppleScopedResource` to gain access first. If access is granted, use `ns_file_coordinator_util` to access the folder.
+- Android: use [saf_stream](https://pub.dev/packages/saf_stream) for file access or [saf_util](https://pub.dev/packages/saf_util) for other things.
 
 ```dart
 class FastFilePicker {
@@ -154,10 +154,9 @@ if (Platform.isIOS) {
       return;
     }
     // Access granted.
-    // You can access the folder only if [hasAccess] is true.
-    final subFileNames =
-        (await Directory(folder.path!).list().toList())
-            .map((e) => e.path);
+    // Use `ns_file_coordinator_util` to read the folder.
+    final subFileNames = await _nsFileCoordinatorUtil
+        .listContents(folder.uri!);
 
     setState(() {
       _output =

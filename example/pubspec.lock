@@ -263,6 +263,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.0.0"
+  ns_file_coordinator_util:
+    dependency: "direct main"
+    description:
+      name: ns_file_coordinator_util
+      sha256: edb59f5ef2deb0c3c26dabfefe139803e14a59369efe84648c34c54aa95c8b6b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.25.0"
   path:
     dependency: transitive
     description:
