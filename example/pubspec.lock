@@ -79,7 +79,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.4.6"
+    version: "0.4.7"
   file_selector:
     dependency: transitive
     description:
@@ -291,18 +291,18 @@ packages:
     dependency: "direct main"
     description:
       name: saf_stream
-      sha256: f48b9f134d0cd1047a0f58539e967400f3a15846482911a2d892b1851385ce27
+      sha256: "417501ced1caeb98958524e1a93e64be87af203395a7ba7bb1da47b19234ccf1"
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.2"
+    version: "0.11.3"
   saf_util:
     dependency: "direct main"
     description:
       name: saf_util
-      sha256: b18e57677fc704918b2a67d7b5aa1c9c61dc5f3f2e7e70480576db77d18bec4a
+      sha256: "219f983e5f17b28998335158cdc97add9d52af9884e38b5a43f10dcc070510ec"
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.0"
+    version: "0.11.0"
   sky_engine:
     dependency: transitive
     description: flutter
