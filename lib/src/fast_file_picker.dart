@@ -12,20 +12,21 @@ class FastFilePickerPath {
   final String name;
   final String? path;
   final String? uri;
+  final int? size;
 
-  FastFilePickerPath._(this.name, this.path, this.uri);
+  FastFilePickerPath._(this.name, this.path, this.uri, this.size);
 
-  static FastFilePickerPath fromUri(String name, String uri) {
-    return FastFilePickerPath._(name, null, uri);
+  static FastFilePickerPath fromUri(String name, String uri, int? size) {
+    return FastFilePickerPath._(name, null, uri, size);
   }
 
-  static FastFilePickerPath fromPath(String name, String path) {
-    return FastFilePickerPath._(name, path, null);
+  static FastFilePickerPath fromPath(String name, String path, int? size) {
+    return FastFilePickerPath._(name, path, null, size);
   }
 
   static FastFilePickerPath fromPathAndUri(
-      String name, String path, String uri) {
-    return FastFilePickerPath._(name, path, uri);
+      String name, String path, String uri, int? size) {
+    return FastFilePickerPath._(name, path, uri, size);
   }
 
   @override
@@ -38,13 +39,15 @@ class FastFilePickerPath {
       'name': name,
       'path': path,
       'uri': uri,
+      'size': size,
     };
   }
 
   FastFilePickerPath.fromJson(Map<String, dynamic> json)
       : name = json['name'] as String,
         path = json['path'] as String?,
-        uri = json['uri'] as String?;
+        uri = json['uri'] as String?,
+        size = json['size'] as int?;
 }
 
 final SafUtil _safUtil = SafUtil();
@@ -113,7 +116,7 @@ class FastFilePicker {
       if (res == null) {
         return null;
       }
-      return FastFilePickerPath.fromUri(res.name, res.uri);
+      return FastFilePickerPath.fromUri(res.name, res.uri, res.length);
     }
     if (Platform.isIOS && useFileSelector != true) {
       final iosPicker = IosDocumentPicker();
@@ -122,7 +125,8 @@ class FastFilePicker {
       if (res == null) {
         return null;
       }
-      return FastFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
+      return FastFilePickerPath.fromPathAndUri(
+          res.name, res.path, res.url, null);
     }
     if (Platform.isMacOS && useFileSelector != true) {
       final macosPicker = MacosFilePicker();
@@ -134,7 +138,8 @@ class FastFilePicker {
       if (res == null) {
         return null;
       }
-      return FastFilePickerPath.fromPathAndUri(res.name, res.path, res.url);
+      return FastFilePickerPath.fromPathAndUri(
+          res.name, res.path, res.url, null);
     }
 
     final folderPath = await getDirectoryPath(
@@ -144,7 +149,7 @@ class FastFilePicker {
       return null;
     }
     final folderName = p.basename(folderPath);
-    return FastFilePickerPath.fromPath(folderName, folderPath);
+    return FastFilePickerPath.fromPath(folderName, folderPath, null);
   }
 
   /// Picks a save file location and return a [String] path.
@@ -207,7 +212,8 @@ class FastFilePicker {
         return null;
       }
       final res = files
-          .map((e) => FastFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
+          .map((e) =>
+              FastFilePickerPath.fromPathAndUri(e.name, e.path, e.url, null))
           .nonNulls
           .toList();
       return res.isEmpty ? null : res;
@@ -227,7 +233,8 @@ class FastFilePicker {
         return null;
       }
       final res = files
-          .map((e) => FastFilePickerPath.fromPathAndUri(e.name, e.path, e.url))
+          .map((e) =>
+              FastFilePickerPath.fromPathAndUri(e.name, e.path, e.url, null))
           .nonNulls
           .toList();
       return res.isEmpty ? null : res;
@@ -239,8 +246,9 @@ class FastFilePicker {
       if (files == null || files.isEmpty) {
         return null;
       }
-      final res =
-          files.map((e) => FastFilePickerPath.fromUri(e.name, e.uri)).toList();
+      final res = files
+          .map((e) => FastFilePickerPath.fromUri(e.name, e.uri, e.length))
+          .toList();
       return res.isEmpty ? null : res;
     }
 
@@ -252,8 +260,9 @@ class FastFilePicker {
       );
       return files.isEmpty
           ? null
-          : files
-              .map((e) => FastFilePickerPath.fromPath(e.name, e.path))
+          : (await Future.wait(files.map((e) async =>
+                  FastFilePickerPath.fromPath(
+                      e.name, e.path, await e.length()))))
               .toList();
     }
 
@@ -264,7 +273,10 @@ class FastFilePicker {
     );
     return file == null
         ? null
-        : [FastFilePickerPath.fromPath(file.name, file.path)];
+        : [
+            FastFilePickerPath.fromPath(
+                file.name, file.path, await file.length())
+          ];
   }
 
   static List<String>? _typeGroupsToUtiList(List<XTypeGroup> typeGroups) {
